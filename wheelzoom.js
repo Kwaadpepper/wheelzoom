@@ -46,47 +46,38 @@ window.wheelzoom = (function(){
 		if (!img || !img.nodeName || img.nodeName !== 'IMG') { return; }
 
 		var settings = {};
-		var width;
-		var height;
-		var bgWidth;
-		var bgHeight;
-		var bgPosX;
-		var bgPosY;
-		var previousEvent;
-		var cachedDataUrl;
-		var initBgPosX;
-		var initBgPosY;
+		img.wz = {};
 
 		function setSrcToBackground(img) {
 			img.style.backgroundImage = 'url("'+img.src+'")';
 			img.style.backgroundRepeat = 'no-repeat';
 			canvas.width = img.naturalWidth;
 			canvas.height = img.naturalHeight;
-			cachedDataUrl = canvas.toDataURL();
-			img.src = cachedDataUrl;
+			img.wz.cachedDataUrl = canvas.toDataURL();
+			img.src = img.wz.cachedDataUrl;
 		}
 
 		function updateBgStyle() {
-			if (bgPosX > 0) {
-				bgPosX = 0;
-			} else if (bgPosX < width - bgWidth) {
-				bgPosX = width - bgWidth;
+			if (img.wz.bgPosX > 0) {
+				img.wz.bgPosX = 0;
+			} else if (img.wz.bgPosX < img.wz.width - img.wz.bgWidth) {
+				img.wz.bgPosX = img.wz.width - img.wz.bgWidth;
 			}
 
-			if (bgPosY > 0) {
-				bgPosY = 0;
-			} else if (bgPosY < height - bgHeight) {
-				bgPosY = height - bgHeight;
+			if (img.wz.bgPosY > 0) {
+				img.wz.bgPosY = 0;
+			} else if (img.wz.bgPosY < img.wz.height - img.wz.bgHeight) {
+				img.wz.bgPosY = img.wz.height - img.wz.bgHeight;
 			}
 
-			img.style.backgroundSize = bgWidth+'px '+bgHeight+'px';
-			img.style.backgroundPosition = bgPosX+'px '+bgPosY+'px';
+			img.style.backgroundSize = img.wz.bgWidth+'px '+img.wz.bgHeight+'px';
+			img.style.backgroundPosition = img.wz.bgPosX+'px '+img.wz.bgPosY+'px';
 		}
 
 		function reset() {
-			bgWidth = width;
-			bgHeight = height;
-			bgPosX = bgPosY = 0;
+			img.wz.bgWidth = img.wz.width;
+			img.wz.bgHeight = img.wz.height;
+			img.wz.bgPosX = img.wz.bgPosY = 0;
 			updateBgStyle();
 		}
 
@@ -116,51 +107,51 @@ window.wheelzoom = (function(){
 			var offsetY = img.height/2;
 
 			// Record the offset between the bg edge and the center of the image:
-			var bgCenterX = offsetX - bgPosX;
-			var bgCenterY = offsetY - bgPosY;
+			var bgCenterX = offsetX - img.wz.bgPosX;
+			var bgCenterY = offsetY - img.wz.bgPosY;
 			// Use the previous offset to get the percent offset between the bg edge and the center of the image:
-			var bgRatioX = bgCenterX/bgWidth;
-			var bgRatioY = bgCenterY/bgHeight;
+			var bgRatioX = bgCenterX/img.wz.bgWidth;
+			var bgRatioY = bgCenterY/img.wz.bgHeight;
 
 			// Update the bg size:
 			if (deltaY < 0) {
-				if (settings.maxZoom == -1 || (bgWidth + bgWidth*settings.zoom) / width <= settings.maxZoom) {
-					bgWidth += bgWidth*settings.zoom;
-					bgHeight += bgHeight*settings.zoom;
+				if (settings.maxZoom == -1 || (img.wz.bgWidth + img.wz.bgWidth*settings.zoom) / img.wz.width <= settings.maxZoom) {
+					img.wz.bgWidth += img.wz.bgWidth*settings.zoom;
+					img.wz.bgHeight += img.wz.bgHeight*settings.zoom;
 				}
 			} else {
-				bgWidth -= bgWidth*settings.zoom;
-				bgHeight -= bgHeight*settings.zoom;
+				img.wz.bgWidth -= img.wz.bgWidth*settings.zoom;
+				img.wz.bgHeight -= img.wz.bgHeight*settings.zoom;
 			}
 
 			// Take the percent offset and apply it to the new size:
-			bgPosX = offsetX - (bgWidth * bgRatioX);
-			bgPosY = offsetY - (bgHeight * bgRatioY);
+			img.wz.bgPosX = offsetX - (img.wz.bgWidth * bgRatioX);
+			img.wz.bgPosY = offsetY - (img.wz.bgHeight * bgRatioY);
 
 			if (propagate) {
 				if (deltaY < 0) {
 					// setTimeout to handle lot of events fired
 					setTimeout(function() {
 						triggerEvent(img, 'wheelzoom.in', {
-							zoom: bgWidth/width,
-							bgPosX: bgPosX,
-							bgPosY: bgPosY
+							zoom: img.wz.bgWidth/img.wz.width,
+							bgPosX: img.wz.bgPosX,
+							bgPosY: img.wz.bgPosY
 						});
 					}, 10);
 				} else {
 					// setTimeout to handle lot of events fired
 					setTimeout(function() {
 						triggerEvent(img, 'wheelzoom.out', {
-							zoom: bgWidth/width,
-							bgPosX: bgPosX,
-							bgPosY: bgPosY
+							zoom: img.wz.bgWidth/img.wz.width,
+							bgPosX: img.wz.bgPosX,
+							bgPosY: img.wz.bgPosY
 						});
 					}, 10);
 				}
 			}
 
 			// Prevent zooming out beyond the starting size
-			if (bgWidth <= width || bgHeight <= height) {
+			if (img.wz.bgWidth <= img.wz.width || img.wz.bgHeight <= img.wz.height) {
 				triggerEvent(img, 'wheelzoom.reset');
 			} else {
 				updateBgStyle();
@@ -186,36 +177,36 @@ window.wheelzoom = (function(){
 		}
 
 		img.doDrag = function (x, y) {
-			bgPosX = x;
-			bgPosY = y;
+			img.wz.bgPosX = x;
+			img.wz.bgPosY = y;
 
 			updateBgStyle();
 		}
 
 		function drag(e) {
 			e.preventDefault();
-			var xShift = e.pageX - previousEvent.pageX;
-			var yShift = e.pageY - previousEvent.pageY;
-			var x = bgPosX + xShift;
-			var y = bgPosY + yShift;
+			var xShift = e.pageX - img.wz.previousEvent.pageX;
+			var yShift = e.pageY - img.wz.previousEvent.pageY;
+			var x = img.wz.bgPosX + xShift;
+			var y = img.wz.bgPosY + yShift;
 
 			img.doDrag(x, y);
 
 			triggerEvent(img, 'wheelzoom.drag', {
-				bgPosX: bgPosX,
-				bgPosY: bgPosY,
+				bgPosX: img.wz.bgPosX,
+				bgPosY: img.wz.bgPosY,
 				xShift: xShift,
 				yShift: yShift
 			});
 
-			previousEvent = e;
+			img.wz.previousEvent = e;
 			updateBgStyle();
 		}
 
 		function removeDrag() {
 			triggerEvent(img, 'wheelzoom.dragend', {
-				x: bgPosX - initBgPosX,
-				y: bgPosY - initBgPosY
+				x: img.wz.bgPosX - img.wz.initBgPosX,
+				y: img.wz.bgPosY - img.wz.initBgPosY
 			});
 
 			document.removeEventListener('mouseup', removeDrag);
@@ -227,25 +218,25 @@ window.wheelzoom = (function(){
 			triggerEvent(img, 'wheelzoom.dragstart');
 
 			e.preventDefault();
-			previousEvent = e;
+			img.wz.previousEvent = e;
 			document.addEventListener('mousemove', drag);
 			document.addEventListener('mouseup', removeDrag);
 		}
 
 		function load() {
-			if (img.src === cachedDataUrl) return;
+			if (img.src === img.wz.cachedDataUrl) return;
 
 			var computedStyle = window.getComputedStyle(img, null);
 
-			width = parseInt(computedStyle.width, 10);
-			height = parseInt(computedStyle.height, 10);
-			bgWidth = width;
-			bgHeight = height;
-			bgPosX = bgPosY = initBgPosX = initBgPosY = 0;
+			img.wz.width = parseInt(computedStyle.width, 10);
+			img.wz.height = parseInt(computedStyle.height, 10);
+			img.wz.bgWidth = img.wz.width;
+			img.wz.bgHeight = img.wz.height;
+			img.wz.bgPosX = img.wz.bgPosY = img.wz.initBgPosX = img.wz.initBgPosY = 0;
 
 			setSrcToBackground(img);
 
-			img.style.backgroundSize =  width+'px '+height+'px';
+			img.style.backgroundSize =  img.wz.width+'px '+img.wz.height+'px';
 			img.style.backgroundPosition = '0 0';
 
 			img.addEventListener('wheelzoom.reset', reset);
@@ -277,7 +268,7 @@ window.wheelzoom = (function(){
 			settings[key] = typeof options[key] !== 'undefined' ? options[key] : defaults[key];
 		});
 
-		var t = setInterval(function(){
+		var t = setInterval(function () {
 			if (img.complete) {
 				load();
 			}
