@@ -58,26 +58,70 @@ window.wheelzoom = (function(){
 		}
 
 		function updateBgStyle() {
-			if (img.wz.bgPosX > 0) {
-				img.wz.bgPosX = 0;
-			} else if (img.wz.bgPosX < img.wz.width - img.wz.bgWidth) {
-				img.wz.bgPosX = img.wz.width - img.wz.bgWidth;
-			}
+			let windowBox = {
+				left: 0,
+				right: img.width,
+				top: 0,
+				down: img.height,
+				width: img.width,
+				height: img.height
+			};
 
-			if (img.wz.bgPosY > 0) {
-				img.wz.bgPosY = 0;
-			} else if (img.wz.bgPosY < img.wz.height - img.wz.bgHeight) {
-				img.wz.bgPosY = img.wz.height - img.wz.bgHeight;
+			let imageBox = {
+				left: img.wz.bgPosX,
+				right: img.wz.bgPosX + img.wz.bgWidth,
+				top: img.wz.bgPosY,
+				down: img.wz.bgPosY + img.wz.bgHeight,
+				width: img.wz.bgWidth,
+				height: img.wz.bgHeight
+			};
+
+			// If image width is smaller than canvas width
+			if (imageBox.width < windowBox.width) {
+				if (imageBox.left < windowBox.left) {
+					// do not overflow left
+					img.wz.bgPosX = windowBox.left;
+				} else if (imageBox.right > windowBox.right) {
+					// do not overflow right
+					img.wz.bgPosX = windowBox.right - img.wz.bgWidth;
+				}
+			} else { // if image width is bigger than canvas width
+				// force overflow left
+				if (imageBox.left > windowBox.left) {
+					img.wz.bgPosX = windowBox.left;
+				} else if (imageBox.right < windowBox.right) {
+					// force overflow right
+					img.wz.bgPosX = windowBox.right - img.wz.bgWidth;
+				}
+			}
+			// If image height is smaller than canvas height
+			if (imageBox.height < windowBox.height) {
+				if (imageBox.top < windowBox.top) {
+					// do not overflow top
+					img.wz.bgPosY = windowBox.top;
+				} else if (imageBox.down > windowBox.down) {
+					// do not overflow down
+					img.wz.bgPosY = windowBox.down - img.wz.bgHeight;
+				}
+			} else { // if image height is bigger than canvas height
+				// force overflow top
+				if (imageBox.top > windowBox.top) {
+					img.wz.bgPosY = windowBox.top;
+				} else if (imageBox.down < windowBox.down) {
+					// force overflow down
+					img.wz.bgPosY = windowBox.down - img.wz.bgHeight;
+				}
 			}
 
 			img.style.backgroundSize = img.wz.bgWidth+'px '+img.wz.bgHeight+'px';
 			img.style.backgroundPosition = img.wz.bgPosX+'px '+img.wz.bgPosY+'px';
 		}
 
-		function reset() {
+		img.wz.reset = function() {
 			img.wz.bgWidth = img.wz.width;
 			img.wz.bgHeight = img.wz.height;
-			img.wz.bgPosX = img.wz.bgPosY = 0;
+			img.wz.bgPosX = img.width / 2 - img.wz.width / 2;
+			img.wz.bgPosY = img.height / 2 - img.wz.height / 2;
 			updateBgStyle();
 		}
 
@@ -158,7 +202,7 @@ window.wheelzoom = (function(){
 			}
 		}
 
-		function onwheel(e) {
+		img.wz.onwheel = function (e) {
 			var deltaY = 0;
 
 			e.preventDefault();
@@ -183,7 +227,7 @@ window.wheelzoom = (function(){
 			updateBgStyle();
 		}
 
-		function drag(e) {
+		img.wz.drag = function(e) {
 			e.preventDefault();
 			var xShift = e.pageX - img.wz.previousEvent.pageX;
 			var yShift = e.pageY - img.wz.previousEvent.pageY;
@@ -203,24 +247,24 @@ window.wheelzoom = (function(){
 			updateBgStyle();
 		}
 
-		function removeDrag() {
+		img.wz.removeDrag = function () {
 			triggerEvent(img, 'wheelzoom.dragend', {
 				x: img.wz.bgPosX - img.wz.initBgPosX,
 				y: img.wz.bgPosY - img.wz.initBgPosY
 			});
 
-			document.removeEventListener('mouseup', removeDrag);
-			document.removeEventListener('mousemove', drag);
+			document.removeEventListener('mouseup', img.wz.removeDrag);
+			document.removeEventListener('mousemove', img.wz.drag);
 		}
 
 		// Make the background draggable
-		function draggable(e) {
+		img.wz.draggable = function(e) {
 			triggerEvent(img, 'wheelzoom.dragstart');
 
 			e.preventDefault();
 			img.wz.previousEvent = e;
-			document.addEventListener('mousemove', drag);
-			document.addEventListener('mouseup', removeDrag);
+			document.addEventListener('mousemove', img.wz.drag);
+			document.addEventListener('mouseup', img.wz.removeDrag);
 		}
 
 		function load() {
@@ -232,35 +276,34 @@ window.wheelzoom = (function(){
 			img.wz.height = parseInt(computedStyle.height, 10);
 			img.wz.bgWidth = img.wz.width;
 			img.wz.bgHeight = img.wz.height;
-			img.wz.bgPosX = img.wz.bgPosY = img.wz.initBgPosX = img.wz.initBgPosY = 0;
+			img.wz.bgPosX = img.wz.initBgPosX = (img.width - img.wz.width) / 2;
+			img.wz.bgPosY = img.wz.initBgPosY = (img.height -img.wz.height) / 2;
 
 			setSrcToBackground(img);
 
 			img.style.backgroundSize =  img.wz.width+'px '+img.wz.height+'px';
-			img.style.backgroundPosition = '0 0';
+			img.style.backgroundPosition = img.wz.bgPosX+'px '+img.wz.bgPosY+'px';
 
-			img.addEventListener('wheelzoom.reset', reset);
-			img.addEventListener('wheelzoom.destroy', destroy);
-			img.addEventListener('wheel', onwheel);
-			img.addEventListener('mousedown', draggable);
+			img.addEventListener('wheelzoom.reset', img.wz.reset);
+			img.addEventListener('wheelzoom.destroy', img.wz.destroy);
+			img.addEventListener('wheel', img.wz.onwheel);
+			img.addEventListener('mousedown', img.wz.draggable);
 		}
 
-		var destroy = function (originalProperties) {
-			img.removeEventListener('wheelzoom.destroy', destroy);
-			img.removeEventListener('wheelzoom.reset', reset);
-			img.removeEventListener('mouseup', removeDrag);
-			img.removeEventListener('mousemove', drag);
-			img.removeEventListener('mousedown', draggable);
-			img.removeEventListener('wheel', onwheel);
+		img.wz.destroy = function (img, originalProperties) {
+			img.removeEventListener('wheelzoom.destroy', img.wz.destroy);
+			img.removeEventListener('wheelzoom.reset', img.wz.reset);
+			img.removeEventListener('mouseup', img.wz.removeDrag);
+			img.removeEventListener('mousemove', img.wz.drag);
+			img.removeEventListener('mousedown', img.wz.draggable);
+			img.removeEventListener('wheel', img.wz.onwheel);
 
-			img.style.backgroundImage = originalProperties.backgroundImage;
-			img.style.backgroundRepeat = originalProperties.backgroundRepeat;
+			img.style = originalProperties.style;
 			img.src = originalProperties.src;
-		}.bind(null, {
-			backgroundImage: img.style.backgroundImage,
-			backgroundRepeat: img.style.backgroundRepeat,
-			src: img.src
-		});
+		}.bind(null, img, (function() { return {
+			style: img.attributes['style'] ? img.attributes['style'] : '',
+			src: img.attributes['src'] ? img.attributes['src'] : ''
+		}})());
 
 		options = options || {};
 
