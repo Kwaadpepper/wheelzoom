@@ -1,15 +1,36 @@
 {
     "name": "wheelzoom",
-    "version": "1.0.0",
-    "description": "",
+    "version": "1.2.0",
+    "description": "Zoom on images by scrolling",
     "main": "./wheelzoom.js",
+    "homepage": "https://kwaadpepper.github.io/wheelzoom",
+    "repository": "https://github.com/Kwaadpepper/wheelzoom",
+    "bugs": "https://github.com/Kwaadpepper/wheelzoom/issues",
+    "files": [
+        "wheelzoom.js"
+    ],
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "keywords": [],
-    "author": "luperi",
-    "license": "MIT",
-    "devDependencies": {
+    "keywords": [
+        "zoom",
+        "image",
+        "viewer",
+        "scroll",
+        "wheel"
+    ],
+    "author": {
+        "name": "luperi",
+        "url": "https://github.com/Luperi"
     },
+    "contributors": [
+        {
+            "name": "Kwaadpepper",
+            "email": "github@jeremydev.ovh",
+            "url": "https://jeremydev.ovh"
+        }
+    ],
+    "license": "MIT",
+    "devDependencies": {},
     "dependencies": {}
 }
