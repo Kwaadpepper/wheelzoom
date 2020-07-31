@@ -1,6 +1,6 @@
 {
-    "name": "wheelzoom",
-    "version": "1.2.0",
+    "name": "@Kwaadpepper/wheelzoom",
+    "version": "1.2.1",
     "description": "Zoom on images by scrolling",
     "main": "./wheelzoom.js",
     "homepage": "https://kwaadpepper.github.io/wheelzoom",
