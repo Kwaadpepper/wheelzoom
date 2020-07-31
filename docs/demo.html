@@ -2,13 +2,12 @@
 layout: default
 ---
 
-<h1>
-    Welcome to
-    <a target="_blank" href="https://kwaadpepper.github.io/wheelzoom/"
-        >wheelzoom 1.2</a
-    >
-    demo page
-</h1>
+<h1>Wheelzoom Demo</h1>
+
+<h3>
+    <a href="https://kwaadpepper.github.io/wheelzoom/">Usage</a>
+    <a href="https://kwaadpepper.github.io/wheelzoom/demo.html">Demo</a>
+</h3>
 <p>
     This page illustrates two simple implementation of the library. See full
     documentation on
@@ -16,7 +15,7 @@ layout: default
     >.
 </p>
 
-<h2>Basic usage</h2>
+<h2>Events demo</h2>
 <p>Try to zoom with your mouse wheel and drag on the below image.</p>
 <span>Fired event:</span>
 <b
@@ -25,7 +24,7 @@ layout: default
         <img
             id="img1"
             src="{{ 'assets/img/img1.jpg' | relative_url }}"
-            style="width: 500px;"
+            style="width: 100%; height: 100%;"
         />
     </div>
 
@@ -92,8 +91,94 @@ layout: default
         </tr>
     </table>
 
+    <div>
+        <ul>
+            <li>
+                Support for fullscreen
+            </li>
+        </ul>
+    </div>
+    <div>
+        <button id="img6fullscreen">
+            View image in fullscreen
+        </button>
+    </div>
+    <div id="img6wrapper">
+        <div id="img6Button">X</div>
+        <img id="img6" src="{{ 'assets/img/img1.jpg' | relative_url }}" />
+    </div>
+
+    <div>
+        <ul>
+            <li>
+                Support for fullscreen (image in portrait mode)
+            </li>
+        </ul>
+    </div>
+    <div>
+        <button id="img7fullscreen">
+            View image in fullscreen
+        </button>
+    </div>
+    <div id="img7wrapper">
+        <div id="img7Button">X</div>
+        <img id="img7" src="{{ 'assets/img/img3.jpg' | relative_url }}" />
+    </div>
+
     <script src="{{ 'assets/js/wheelzoom.js' | relative_url }}"></script>
     <script>
+        var goFullScreen = function (wrapper, exitButton) {
+            return function () {
+                let img = wrapper;
+                if (img.requestFullscreen) {
+                    img.requestFullscreen();
+                } else if (imgimg.msRequestFullscreen) {
+                    img.msRequestFullscreen();
+                } else if (img.mozRequestFullScreen) {
+                    img.mozRequestFullScreen();
+                } else if (img.webkitRequestFullscreen) {
+                    img.webkitRequestFullscreen();
+                } else {
+                    alert(
+                        "Sorry, your browser is too old and doesn't support fullscreen :-("
+                    );
+                    return;
+                }
+                exitButton.style.display = "block";
+            };
+        };
+
+        var exitFullscreen = function () {
+            this.style.display = "none";
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        };
+
+        var img6fullscreen = document.getElementById("img6fullscreen");
+        var img6fullscreenExitButton = document.getElementById("img6Button");
+        img6fullscreenExitButton.style.display = "none";
+        img6fullscreen.onclick = goFullScreen(
+            document.getElementById("img6wrapper"),
+            img6fullscreenExitButton
+        );
+        img6fullscreenExitButton.onclick = exitFullscreen;
+
+        var img7fullscreen = document.getElementById("img7fullscreen");
+        var img7fullscreenExitButton = document.getElementById("img7Button");
+        img7fullscreenExitButton.style.display = "none";
+        img7fullscreen.onclick = goFullScreen(
+            document.getElementById("img7wrapper"),
+            img7fullscreenExitButton
+        );
+        img7fullscreenExitButton.onclick = exitFullscreen;
+
         window.onload = function () {
             var zoomIn = -100;
             var zoomOut = 100;
