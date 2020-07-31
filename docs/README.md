@@ -4,7 +4,7 @@ layout: default
 
 # Wheelzoom Usage
 
-### [Usage](https://kwaadpepper.github.io/wheelzoom/demo.html) [Demo](https://kwaadpepper.github.io/wheelzoom/demo.html)
+### [Usage](https://kwaadpepper.github.io/wheelzoom-revived/demo.html) [Demo](https://kwaadpepper.github.io/wheelzoom-revived/demo.html)
 
 Based on [this script](http://www.jacklmoore.com/wheelzoom/), which is no longer manteined.
 

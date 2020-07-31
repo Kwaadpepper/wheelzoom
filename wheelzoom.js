@@ -1,4 +1,4 @@
-/*! Wheelzoom 1.2.2
+/*! Wheelzoom 1.2.3
   license: MIT
   https://kwaadpepper.github.io/wheelzoom/
 */
