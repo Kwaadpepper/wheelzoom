@@ -1,0 +1,49 @@
+{
+    "name": "@Kwaadpepper/wheelzoom-revived",
+    "version": "1.2.4",
+    "description": "Zoom on images by scrolling",
+    "main": "./wheelzoom.js",
+    "homepage": "https://kwaadpepper.github.io/wheelzoom-revived",
+    "bugs": "https://github.com/kwaadpepper/wheelzoom-revived/issues",
+    "files": [
+        "wheelzoom.js"
+    ],
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "zoom",
+        "image",
+        "viewer",
+        "scroll",
+        "wheel"
+    ],
+    "author": {
+        "name": "Kwaadpepper",
+        "url": "https://github.com/Kwaadpepper"
+    },
+    "contributors": [
+        {
+            "name": "Kwaadpepper",
+            "email": "github@jeremydev.ovh",
+            "url": "https://jeremydev.ovh"
+        }
+    ],
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Kwaadpepper/wheelzoom-revived.git"
+    },
+    "devDependencies": {
+        "eslint": "^7.5.0",
+        "eslint-config-standard": "^14.1.1",
+        "eslint-plugin-import": "^2.22.0",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-promise": "^4.2.1",
+        "eslint-plugin-standard": "^4.0.1"
+    },
+    "dependencies": {},
+    "publishConfig": {
+      "registry":"https://npm.pkg.github.com/"
+    }
+}
