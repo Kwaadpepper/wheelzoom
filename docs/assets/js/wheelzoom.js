@@ -1,4 +1,4 @@
-/*! Wheelzoom 1.2.3
+/*! Wheelzoom 1.2.4
   license: MIT
   https://kwaadpepper.github.io/wheelzoom/
 */
@@ -369,8 +369,6 @@ window.wheelzoom = (function () {
       images[0].wz.destroy()
     }
   }
-
-  console.log(wheelzoom)
 
   // Do nothing in IE8
   if (typeof window.getComputedStyle !== 'function') {
