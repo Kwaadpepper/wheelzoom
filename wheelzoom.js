@@ -48,6 +48,7 @@ window.triggerEvent = function (target, eventName, params) {
 window.wheelzoom = (function () {
   var defaults = {
     zoom: 0.10,
+    pinchSensibility: 0.3,
     maxZoom: -1
   }
 
@@ -149,6 +150,7 @@ window.wheelzoom = (function () {
 
     function doZoom (deltaY, propagate) {
       propagate = propagate || false
+      var zoomSensibility = settings.zoom * settings.pinchSensibility
 
       // zoom always at the center of the image
       var offsetX = img.width / 2
@@ -163,13 +165,13 @@ window.wheelzoom = (function () {
 
       // Update the bg size:
       if (deltaY < 0) {
-        if (settings.maxZoom === -1 || (img.wz.bgWidth + img.wz.bgWidth * settings.zoom) / img.wz.width <= settings.maxZoom) {
-          img.wz.bgWidth += img.wz.bgWidth * settings.zoom
-          img.wz.bgHeight += img.wz.bgHeight * settings.zoom
+        if (settings.maxZoom === -1 || (img.wz.bgWidth + img.wz.bgWidth * zoomSensibility) / img.wz.width <= settings.maxZoom) {
+          img.wz.bgWidth += img.wz.bgWidth * zoomSensibility
+          img.wz.bgHeight += img.wz.bgHeight * zoomSensibility
         }
       } else {
-        img.wz.bgWidth -= img.wz.bgWidth * settings.zoom
-        img.wz.bgHeight -= img.wz.bgHeight * settings.zoom
+        img.wz.bgWidth -= img.wz.bgWidth * zoomSensibility
+        img.wz.bgHeight -= img.wz.bgHeight * zoomSensibility
       }
 
       // Take the percent offset and apply it to the new size:
@@ -233,11 +235,13 @@ window.wheelzoom = (function () {
 
     img.wz.drag = function (e) {
       e.preventDefault()
-      var xShift, yShift
+      var xShift, yShift, dist, prevDist, deltaPinch
+      var isPinch = false
 
       switch (e.type) {
         case 'touchstart':
         case 'touchmove':
+          isPinch = e.touches.length === 2
           xShift = e.touches[0].pageX
           yShift = e.touches[0].pageY
           break
@@ -249,12 +253,30 @@ window.wheelzoom = (function () {
       switch (img.wz.previousEvent.type) {
         case 'touchstart':
         case 'touchmove':
+          isPinch = img.wz.previousEvent.touches.length === 2
           xShift -= img.wz.previousEvent.touches[0].pageX
           yShift -= img.wz.previousEvent.touches[0].pageY
           break
         default:
           xShift -= img.wz.previousEvent.pageX
           yShift -= img.wz.previousEvent.pageY
+      }
+
+      if (isPinch) { // Zoom if pinch
+        dist = Math.sqrt(
+          Math.pow(e.touches[1].pageX - e.touches[0].pageX, 2) +
+          Math.pow(e.touches[1].pageY - e.touches[0].pageY, 2))
+        prevDist = Math.sqrt(
+          Math.pow(img.wz.previousEvent.touches[1].pageX - img.wz.previousEvent.touches[0].pageX, 2) +
+          Math.pow(img.wz.previousEvent.touches[1].pageY - img.wz.previousEvent.touches[0].pageY, 2))
+        deltaPinch = prevDist - dist
+
+        if (deltaPinch < 0) {
+          img.doZoomIn(true)
+        } else {
+          img.doZoomOut(true)
+        }
+        return
       }
 
       var x = img.wz.bgPosX + xShift
