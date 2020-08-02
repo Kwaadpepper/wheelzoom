@@ -55,11 +55,12 @@ window.wheelzoom = (function () {
   var images = []
   var canvas = document.createElement('canvas')
 
+  var isPinched = false
+
   var main = function (img, options) {
     if (!img || !img.nodeName || img.nodeName !== 'IMG') { return }
 
     var settings = {}
-    var isPinched = false
     img.wz = {}
 
     function setSrcToBackground (img) {
