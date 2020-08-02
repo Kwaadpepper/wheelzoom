@@ -59,6 +59,7 @@ window.wheelzoom = (function () {
     if (!img || !img.nodeName || img.nodeName !== 'IMG') { return }
 
     var settings = {}
+    var isPinched = false
     img.wz = {}
 
     function setSrcToBackground (img) {
@@ -150,7 +151,7 @@ window.wheelzoom = (function () {
 
     function doZoom (deltaY, propagate) {
       propagate = propagate || false
-      var zoomSensibility = settings.zoom * settings.pinchSensibility
+      var zoomSensibility = isPinched ? settings.zoom * settings.pinchSensibility : settings.zoom
 
       // zoom always at the center of the image
       var offsetX = img.width / 2
@@ -236,12 +237,11 @@ window.wheelzoom = (function () {
     img.wz.drag = function (e) {
       e.preventDefault()
       var xShift, yShift, dist, prevDist, deltaPinch
-      var isPinch = false
 
       switch (e.type) {
         case 'touchstart':
         case 'touchmove':
-          isPinch = e.touches.length === 2
+          isPinched = e.touches.length === 2
           xShift = e.touches[0].pageX
           yShift = e.touches[0].pageY
           break
@@ -253,7 +253,7 @@ window.wheelzoom = (function () {
       switch (img.wz.previousEvent.type) {
         case 'touchstart':
         case 'touchmove':
-          isPinch = img.wz.previousEvent.touches.length === 2
+          isPinched = img.wz.previousEvent.touches.length === 2
           xShift -= img.wz.previousEvent.touches[0].pageX
           yShift -= img.wz.previousEvent.touches[0].pageY
           break
@@ -262,7 +262,7 @@ window.wheelzoom = (function () {
           yShift -= img.wz.previousEvent.pageY
       }
 
-      if (isPinch) { // Zoom if pinch
+      if (isPinched) { // Zoom if pinch
         dist = Math.sqrt(
           Math.pow(e.touches[1].pageX - e.touches[0].pageX, 2) +
           Math.pow(e.touches[1].pageY - e.touches[0].pageY, 2))
