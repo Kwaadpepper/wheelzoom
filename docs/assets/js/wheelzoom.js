@@ -1,4 +1,4 @@
-/*! Wheelzoom 1.2.4
+/*! Wheelzoom 1.3.0
   license: MIT
   https://kwaadpepper.github.io/wheelzoom/
 */
@@ -241,8 +241,30 @@ window.wheelzoom = (function () {
 
     img.wz.drag = function (e) {
       e.preventDefault()
-      var xShift = e.pageX - img.wz.previousEvent.pageX
-      var yShift = e.pageY - img.wz.previousEvent.pageY
+      var xShift, yShift
+
+      switch (e.type) {
+        case 'touchstart':
+        case 'touchmove':
+          xShift = e.touches[0].pageX
+          yShift = e.touches[0].pageY
+          break
+        default:
+          xShift = e.pageX
+          yShift = e.pageY
+      }
+
+      switch (img.wz.previousEvent.type) {
+        case 'touchstart':
+        case 'touchmove':
+          xShift -= img.wz.previousEvent.touches[0].pageX
+          yShift -= img.wz.previousEvent.touches[0].pageY
+          break
+        default:
+          xShift -= img.wz.previousEvent.pageX
+          yShift -= img.wz.previousEvent.pageY
+      }
+
       var x = img.wz.bgPosX + xShift
       var y = img.wz.bgPosY + yShift
 
@@ -267,6 +289,8 @@ window.wheelzoom = (function () {
 
       document.removeEventListener('mouseup', img.wz.removeDrag)
       document.removeEventListener('mousemove', img.wz.drag)
+      document.removeEventListener('touchend', img.wz.removeDrag)
+      document.removeEventListener('touchmove', img.wz.drag)
     }
 
     // Make the background draggable
@@ -275,8 +299,14 @@ window.wheelzoom = (function () {
 
       e.preventDefault()
       img.wz.previousEvent = e
-      document.addEventListener('mousemove', img.wz.drag)
-      document.addEventListener('mouseup', img.wz.removeDrag)
+
+      if (e.type === 'touchstart') {
+        document.addEventListener('touchmove', img.wz.drag)
+        document.addEventListener('touchend', img.wz.removeDrag)
+      } else {
+        document.addEventListener('mousemove', img.wz.drag)
+        document.addEventListener('mouseup', img.wz.removeDrag)
+      }
     }
 
     function load () {
@@ -300,6 +330,7 @@ window.wheelzoom = (function () {
       img.addEventListener('wheelzoom.destroy', img.wz.destroy)
       img.addEventListener('wheel', img.wz.onwheel)
       img.addEventListener('mousedown', img.wz.draggable)
+      img.addEventListener('touchstart', img.wz.draggable)
     }
 
     img.wz.destroy = function (img, originalProperties) {
@@ -308,6 +339,9 @@ window.wheelzoom = (function () {
       img.removeEventListener('mouseup', img.wz.removeDrag)
       img.removeEventListener('mousemove', img.wz.drag)
       img.removeEventListener('mousedown', img.wz.draggable)
+      img.removeEventListener('touchleave', img.wz.removeDrag)
+      img.removeEventListener('touchmove', img.wz.drag)
+      img.removeEventListener('touchstart', img.wz.draggable)
       img.removeEventListener('wheel', img.wz.onwheel)
 
       img.style = originalProperties.style
