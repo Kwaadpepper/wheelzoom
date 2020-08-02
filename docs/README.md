@@ -4,7 +4,7 @@ layout: default
 
 # Wheelzoom Usage
 
-### [Usage](https://kwaadpepper.github.io/wheelzoom-revived/demo.html) [Demo](https://kwaadpepper.github.io/wheelzoom-revived/demo.html)
+### [Usage](https://kwaadpepper.github.io/wheelzoom-revived/) [Demo](https://kwaadpepper.github.io/wheelzoom-revived/demo.html)
 
 Based on [this script](http://www.jacklmoore.com/wheelzoom/), which is no longer manteined.
 
@@ -50,6 +50,14 @@ Chrome, Safari, Opera, FireFox 17+, IE9+.
 | `wheelzoom.dragstart` | Fired when start dragging on the image (see full demo example).                 |
 | `wheelzoom.drag`      | Fired when image is dragged (see full demo example).                            |
 | `wheelzoom.dragend`   | Fired when end dragging on the image (see full demo example).                   |
+
+### Configuration
+
+| Name               | Description                 | Default value |
+| :----------------- | :-------------------------- | :------------ |
+| `zoom`             | The mouse wheel zoom ratio  | 0.10          |
+| `pinchSensibility` | The pinch touch zoom ratio  | 0.3           |
+| `maxZoom`          | Max zoom value for an image | -1            |
 
 ### API Documentation
 
