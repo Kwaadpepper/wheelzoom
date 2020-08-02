@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h1>Wheelzoom Demo</h1>
+<h2>Wheelzoom Demo</h2>
 
 <h3>
     <a href="https://kwaadpepper.github.io/wheelzoom-revived/">Usage</a>
@@ -19,234 +19,244 @@ layout: default
 <h2>Events demo</h2>
 <p>Try to zoom with your mouse wheel and drag on the below image.</p>
 <span>Fired event:</span>
-<b
-    ><span id="label1">""</span><b /><br /><br />
-    <div width="500px">
-        <img
-            id="img1"
-            src="{{ 'assets/img/img1.jpg' | relative_url }}"
-            style="width: 100%; height: 100%;"
-        />
-    </div>
+<b><span id="label1">""</span></b>
+<br /><br />
+<div style="width: 500px;">
+    <img
+        id="img1"
+        src="{{ 'assets/img/img1.jpg' | relative_url }}"
+        style="width: 100%; height: 100%;"
+        alt="image 1"
+    />
+</div>
 
-    <h2>Event handling</h2>
-    <div>
-        <p>This example shows a simple implementation of event handling:</p>
-        <p></p>
-        <ul>
-            <li>
-                if you zoom one of the image, the same zoom level is applied to
-                the other one;
-            </li>
-            <li>
-                if you drag on one of the image, the same drag is applied to the
-                other one.
-            </li>
-        </ul>
-    </div>
-    <table style="width: 500px;">
-        <tr>
-            <td width="50%">
-                <img
-                    id="img2"
-                    src="{{ 'assets/img/img1.jpg' | relative_url }}"
-                    style="width: 500px;"
-                />
-            </td>
+<h2>Event handling</h2>
+<div>
+    <p>This example shows a simple implementation of event handling:</p>
+    <p></p>
+    <ul>
+        <li>
+            if you zoom one of the image, the same zoom level is applied to the
+            other one;
+        </li>
+        <li>
+            if you drag on one of the image, the same drag is applied to the
+            other one.
+        </li>
+    </ul>
+</div>
+<table style="width: 500px;">
+    <tr>
+        <td style="width: 50%;">
+            <img
+                id="img2"
+                src="{{ 'assets/img/img1.jpg' | relative_url }}"
+                style="width: 500px;"
+                alt="image 2"
+            />
+        </td>
 
-            <td width="50%">
-                <img
-                    id="img3"
-                    src="{{ 'assets/img/img2.jpg' | relative_url }}"
-                    style="width: 500px;"
-                />
-            </td>
-        </tr>
-    </table>
+        <td style="width: 50%;">
+            <img
+                id="img3"
+                src="{{ 'assets/img/img2.jpg' | relative_url }}"
+                style="width: 500px;"
+                alt="image 3"
+            />
+        </td>
+    </tr>
+</table>
 
-    <div>
-        <ul>
-            <li>
-                if you drag on one of the image, the same drag is applied to the
-                other one, <b>WHEN DRAG IS ENDEND</b>.
-            </li>
-        </ul>
-    </div>
-    <table style="width: 500px;">
-        <tr>
-            <td width="50%">
-                <img
-                    id="img4"
-                    src="{{ 'assets/img/img1.jpg' | relative_url }}"
-                    style="width: 500px;"
-                />
-            </td>
+<div>
+    <ul>
+        <li>
+            if you drag on one of the image, the same drag is applied to the
+            other one, <b>WHEN DRAG IS ENDEND</b>.
+        </li>
+    </ul>
+</div>
+<table style="width: 500px;">
+    <tr>
+        <td style="width: 50%;">
+            <img
+                id="img4"
+                src="{{ 'assets/img/img1.jpg' | relative_url }}"
+                style="width: 500px;"
+                alt="image 4"
+            />
+        </td>
 
-            <td width="50%">
-                <img
-                    id="img5"
-                    src="{{ 'assets/img/img2.jpg' | relative_url }}"
-                    style="width: 500px;"
-                />
-            </td>
-        </tr>
-    </table>
+        <td style="width: 50%;">
+            <img
+                id="img5"
+                src="{{ 'assets/img/img2.jpg' | relative_url }}"
+                style="width: 500px;"
+                alt="image 5"
+            />
+        </td>
+    </tr>
+</table>
 
-    <div>
-        <ul>
-            <li>
-                Support for fullscreen
-            </li>
-        </ul>
-    </div>
-    <div>
-        <button id="img6fullscreen">
-            View image in fullscreen
-        </button>
-    </div>
-    <div id="img6wrapper">
-        <div id="img6Button">X</div>
-        <img id="img6" src="{{ 'assets/img/img1.jpg' | relative_url }}" />
-    </div>
+<div>
+    <ul>
+        <li>
+            Support for fullscreen
+        </li>
+    </ul>
+</div>
+<div>
+    <button id="img6fullscreen">
+        View image in fullscreen
+    </button>
+</div>
+<div id="img6wrapper">
+    <div id="img6Button">X</div>
+    <img
+        id="img6"
+        src="{{ 'assets/img/img1.jpg' | relative_url }}"
+        alt="image 6"
+    />
+</div>
 
-    <div>
-        <ul>
-            <li>
-                Support for fullscreen (image in portrait mode)
-            </li>
-        </ul>
-    </div>
-    <div>
-        <button id="img7fullscreen">
-            View image in fullscreen
-        </button>
-    </div>
-    <div id="img7wrapper">
-        <div id="img7Button">X</div>
-        <img id="img7" src="{{ 'assets/img/img3.jpg' | relative_url }}" />
-    </div>
+<div>
+    <ul>
+        <li>
+            Support for fullscreen (image in portrait mode)
+        </li>
+    </ul>
+</div>
+<div>
+    <button id="img7fullscreen">
+        View image in fullscreen
+    </button>
+</div>
+<div id="img7wrapper">
+    <div id="img7Button">X</div>
+    <img
+        id="img7"
+        src="{{ 'assets/img/img3.jpg' | relative_url }}"
+        alt="image 7"
+    />
+</div>
 
-    <script src="{{ 'assets/js/wheelzoom.js' | relative_url }}"></script>
-    <script>
-        var goFullScreen = function (wrapper, exitButton) {
-            return function () {
-                let img = wrapper;
-                if (img.requestFullscreen) {
-                    img.requestFullscreen();
-                } else if (imgimg.msRequestFullscreen) {
-                    img.msRequestFullscreen();
-                } else if (img.mozRequestFullScreen) {
-                    img.mozRequestFullScreen();
-                } else if (img.webkitRequestFullscreen) {
-                    img.webkitRequestFullscreen();
-                } else {
-                    alert(
-                        "Sorry, your browser is too old and doesn't support fullscreen :-("
-                    );
-                    return;
-                }
-                exitButton.style.display = "block";
-            };
-        };
-
-        var exitFullscreen = function () {
-            this.style.display = "none";
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.mozCancelFullScreen) {
-                document.mozCancelFullScreen();
-            } else if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
-            } else if (document.msExitFullscreen) {
-                document.msExitFullscreen();
+<script src="{{ 'assets/js/wheelzoom.js' | relative_url }}?{{ site.time | to_integer }}"></script>
+<script>
+    var goFullScreen = function (wrapper, exitButton) {
+        return function () {
+            let img = wrapper;
+            if (img.requestFullscreen) {
+                img.requestFullscreen();
+            } else if (imgimg.msRequestFullscreen) {
+                img.msRequestFullscreen();
+            } else if (img.mozRequestFullScreen) {
+                img.mozRequestFullScreen();
+            } else if (img.webkitRequestFullscreen) {
+                img.webkitRequestFullscreen();
+            } else {
+                alert(
+                    "Sorry, your browser is too old and doesn't support fullscreen :-("
+                );
+                return;
             }
+            exitButton.style.display = "block";
         };
+    };
 
-        var img6fullscreen = document.getElementById("img6fullscreen");
-        var img6fullscreenExitButton = document.getElementById("img6Button");
-        img6fullscreenExitButton.style.display = "none";
-        img6fullscreen.onclick = goFullScreen(
-            document.getElementById("img6wrapper"),
-            img6fullscreenExitButton
-        );
-        img6fullscreenExitButton.onclick = exitFullscreen;
+    var exitFullscreen = function () {
+        this.style.display = "none";
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+    };
 
-        var img7fullscreen = document.getElementById("img7fullscreen");
-        var img7fullscreenExitButton = document.getElementById("img7Button");
-        img7fullscreenExitButton.style.display = "none";
-        img7fullscreen.onclick = goFullScreen(
-            document.getElementById("img7wrapper"),
-            img7fullscreenExitButton
-        );
-        img7fullscreenExitButton.onclick = exitFullscreen;
+    var img6fullscreen = document.getElementById("img6fullscreen");
+    var img6fullscreenExitButton = document.getElementById("img6Button");
+    img6fullscreenExitButton.style.display = "none";
+    img6fullscreen.onclick = goFullScreen(
+        document.getElementById("img6wrapper"),
+        img6fullscreenExitButton
+    );
+    img6fullscreenExitButton.onclick = exitFullscreen;
 
-        window.onload = function () {
-            var zoomIn = -100;
-            var zoomOut = 100;
+    var img7fullscreen = document.getElementById("img7fullscreen");
+    var img7fullscreenExitButton = document.getElementById("img7Button");
+    img7fullscreenExitButton.style.display = "none";
+    img7fullscreen.onclick = goFullScreen(
+        document.getElementById("img7wrapper"),
+        img7fullscreenExitButton
+    );
+    img7fullscreenExitButton.onclick = exitFullscreen;
 
-            images = wheelzoom(document.querySelectorAll("img"), {
-                zoom: 0.1,
-                maxZoom: 10,
-            });
+    window.onload = function () {
+        var zoomIn = -100;
+        var zoomOut = 100;
 
-            images[0].addEventListener("wheelzoom.in", function (e) {
-                document.getElementById("label1").innerHTML = '"wheelzoom.in"';
-            });
-            images[0].addEventListener("wheelzoom.out", function (e) {
-                document.getElementById("label1").innerHTML = '"wheelzoom.out"';
-            });
-            images[0].addEventListener("wheelzoom.dragstart", function (e) {
-                document.getElementById("label1").innerHTML =
-                    '"wheelzoom.dragstart"';
-            });
-            images[0].addEventListener("wheelzoom.drag", function (e) {
-                document.getElementById("label1").innerHTML =
-                    '"wheelzoom.drag"';
-            });
-            images[0].addEventListener("wheelzoom.dragend", function (e) {
-                document.getElementById("label1").innerHTML =
-                    '"wheelzoom.dragend"';
-            });
+        images = wheelzoom(document.querySelectorAll("img"), {
+            zoom: 0.1,
+            maxZoom: 10,
+        });
 
-            images[1].addEventListener("wheelzoom.in", function (e) {
-                images[2].doZoomIn();
-            });
-            images[1].addEventListener("wheelzoom.out", function (e) {
-                images[2].doZoomOut();
-            });
-            images[1].addEventListener("wheelzoom.drag", function (e) {
-                images[2].doDrag(e.detail.bgPosX, e.detail.bgPosY);
-            });
+        images[0].addEventListener("wheelzoom.in", function (e) {
+            document.getElementById("label1").innerHTML = '"wheelzoom.in"';
+        });
+        images[0].addEventListener("wheelzoom.out", function (e) {
+            document.getElementById("label1").innerHTML = '"wheelzoom.out"';
+        });
+        images[0].addEventListener("wheelzoom.dragstart", function (e) {
+            document.getElementById("label1").innerHTML =
+                '"wheelzoom.dragstart"';
+        });
+        images[0].addEventListener("wheelzoom.drag", function (e) {
+            document.getElementById("label1").innerHTML = '"wheelzoom.drag"';
+        });
+        images[0].addEventListener("wheelzoom.dragend", function (e) {
+            document.getElementById("label1").innerHTML = '"wheelzoom.dragend"';
+        });
 
-            images[2].addEventListener("wheelzoom.in", function (e) {
-                images[1].doZoomIn();
-            });
-            images[2].addEventListener("wheelzoom.out", function (e) {
-                images[1].doZoomOut();
-            });
-            images[2].addEventListener("wheelzoom.drag", function (e) {
-                images[1].doDrag(e.detail.bgPosX, e.detail.bgPosY);
-            });
+        images[1].addEventListener("wheelzoom.in", function (e) {
+            images[2].doZoomIn();
+        });
+        images[1].addEventListener("wheelzoom.out", function (e) {
+            images[2].doZoomOut();
+        });
+        images[1].addEventListener("wheelzoom.drag", function (e) {
+            images[2].doDrag(e.detail.bgPosX, e.detail.bgPosY);
+        });
 
-            images[3].addEventListener("wheelzoom.in", function (e) {
-                images[4].doZoomIn();
-            });
-            images[3].addEventListener("wheelzoom.out", function (e) {
-                images[4].doZoomOut();
-            });
-            images[3].addEventListener("wheelzoom.dragend", function (e) {
-                images[4].doDrag(e.detail.x, e.detail.y);
-            });
+        images[2].addEventListener("wheelzoom.in", function (e) {
+            images[1].doZoomIn();
+        });
+        images[2].addEventListener("wheelzoom.out", function (e) {
+            images[1].doZoomOut();
+        });
+        images[2].addEventListener("wheelzoom.drag", function (e) {
+            images[1].doDrag(e.detail.bgPosX, e.detail.bgPosY);
+        });
 
-            images[4].addEventListener("wheelzoom.in", function (e) {
-                images[3].doZoomIn();
-            });
-            images[4].addEventListener("wheelzoom.out", function (e) {
-                images[3].doZoomOut();
-            });
-            images[4].addEventListener("wheelzoom.dragend", function (e) {
-                images[3].doDrag(e.detail.x, e.detail.y);
-            });
-        };
-    </script>
-</b>
+        images[3].addEventListener("wheelzoom.in", function (e) {
+            images[4].doZoomIn();
+        });
+        images[3].addEventListener("wheelzoom.out", function (e) {
+            images[4].doZoomOut();
+        });
+        images[3].addEventListener("wheelzoom.dragend", function (e) {
+            images[4].doDrag(e.detail.x, e.detail.y);
+        });
+
+        images[4].addEventListener("wheelzoom.in", function (e) {
+            images[3].doZoomIn();
+        });
+        images[4].addEventListener("wheelzoom.out", function (e) {
+            images[3].doZoomOut();
+        });
+        images[4].addEventListener("wheelzoom.dragend", function (e) {
+            images[3].doDrag(e.detail.x, e.detail.y);
+        });
+    };
+</script>
