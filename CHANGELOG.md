@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Change log md file
 -   Support for drag touch event
+-   Support for pinch to zoom touch event
+
+### Changed
+
+-   Better default arguments on some methods
 
 ## [1.2.4] - 2020-08-01
 
