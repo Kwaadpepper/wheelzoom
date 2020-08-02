@@ -138,25 +138,17 @@ window.wheelzoom = (function () {
     }
 
     img.doZoomIn = function (propagate) {
-      if (typeof propagate === 'undefined') {
-        propagate = false
-      }
-
+      propagate = propagate || false
       doZoom(-100, propagate)
     }
 
     img.doZoomOut = function (propagate) {
-      if (typeof propagate === 'undefined') {
-        propagate = false
-      }
-
+      propagate = propagate || false
       doZoom(100, propagate)
     }
 
     function doZoom (deltaY, propagate) {
-      if (typeof propagate === 'undefined') {
-        propagate = false
-      }
+      propagate = propagate || false
 
       // zoom always at the center of the image
       var offsetX = img.width / 2
