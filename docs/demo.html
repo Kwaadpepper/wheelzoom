@@ -11,9 +11,7 @@ layout: default
 <p>
     This page illustrates two simple implementation of the library. See full
     documentation on
-    <a target="_blank" href="https://github.com/Kwaadpepper/wheelzoom-revived"
-        >GitHub</a
-    >.
+    <a target="_blank" href="https://github.com/Kwaadpepper/wheelzoom-revived">GitHub</a>.
 </p>
 
 <h2>Events demo</h2>
@@ -22,12 +20,7 @@ layout: default
 <b><span id="label1">""</span></b>
 <br /><br />
 <div style="width: 500px;">
-    <img
-        id="img1"
-        src="{{ 'assets/img/img1.jpg' | relative_url }}"
-        style="width: 100%; height: 100%;"
-        alt="image 1"
-    />
+    <img id="img1" src="{{ 'assets/img/img1.jpg' | relative_url }}" style="width: 100%; height: 100%;" alt="image 1" />
 </div>
 
 <h2>Event handling</h2>
@@ -48,21 +41,11 @@ layout: default
 <table style="width: 500px;">
     <tr>
         <td style="width: 50%;">
-            <img
-                id="img2"
-                src="{{ 'assets/img/img1.jpg' | relative_url }}"
-                style="width: 500px;"
-                alt="image 2"
-            />
+            <img id="img2" src="{{ 'assets/img/img1.jpg' | relative_url }}" style="width: 500px;" alt="image 2" />
         </td>
 
         <td style="width: 50%;">
-            <img
-                id="img3"
-                src="{{ 'assets/img/img2.jpg' | relative_url }}"
-                style="width: 500px;"
-                alt="image 3"
-            />
+            <img id="img3" src="{{ 'assets/img/img2.jpg' | relative_url }}" style="width: 500px;" alt="image 3" />
         </td>
     </tr>
 </table>
@@ -78,32 +61,16 @@ layout: default
 <table style="width: 500px;">
     <tr>
         <td style="width: 50%;">
-            <img
-                id="img4"
-                src="{{ 'assets/img/img1.jpg' | relative_url }}"
-                style="width: 500px;"
-                alt="image 4"
-            />
+            <img id="img4" src="{{ 'assets/img/img1.jpg' | relative_url }}" style="width: 500px;" alt="image 4" />
         </td>
 
         <td style="width: 50%;">
-            <img
-                id="img5"
-                src="{{ 'assets/img/img2.jpg' | relative_url }}"
-                style="width: 500px;"
-                alt="image 5"
-            />
+            <img id="img5" src="{{ 'assets/img/img2.jpg' | relative_url }}" style="width: 500px;" alt="image 5" />
         </td>
     </tr>
 </table>
 
-<div>
-    <ul>
-        <li>
-            Support for fullscreen
-        </li>
-    </ul>
-</div>
+<h2>Fullscreen support</h2>
 <div>
     <button id="img6fullscreen">
         View image in fullscreen
@@ -111,11 +78,7 @@ layout: default
 </div>
 <div id="img6wrapper">
     <div id="img6Button">X</div>
-    <img
-        id="img6"
-        src="{{ 'assets/img/img1.jpg' | relative_url }}"
-        alt="image 6"
-    />
+    <img id="img6" src="{{ 'assets/img/img1.jpg' | relative_url }}" alt="image 6" />
 </div>
 
 <div>
@@ -132,75 +95,93 @@ layout: default
 </div>
 <div id="img7wrapper">
     <div id="img7Button">X</div>
-    <img
-        id="img7"
-        src="{{ 'assets/img/img3.jpg' | relative_url }}"
-        alt="image 7"
-    />
+    <img id="img7" src="{{ 'assets/img/img3.jpg' | relative_url }}" alt="image 7" />
+</div>
+
+<div class="prefixs" style="width: 500px;">
+    <h2>Bootstrap modal support</h2>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Launch demo modal
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Image zoom in modal demo</h5>
+                    <!-- <button id="modalFullscreen" class="btn btn-primary"
+                        style="margin-right: 2em;right: 2em; position: absolute; top: 2em;">Fullscreen</button> -->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="max-height: calc(100vh - 212px); overflow-y: auto;">
+                    <p>Make scrollable <code>.modal-body</code> by adding <code>max-height: calc(100vh - 212px); overflow-y:
+                        auto;</code></p>
+                    <p>
+                        To work wheelzoom has to be called when the image is visible, so you need to use the Events
+                    <figure class="highlight">
+                        <pre>
+    $('#exampleModal').on('shown.bs.modal', function (e) {
+        bsImageModal = wheelzoom(document.getElementById('img8'));
+    });
+
+    $('#exampleModal').on('hiden.bs.modal', function (e) {
+        bsImageModal.wz.destroy()
+    });
+                        </pre>
+                    </figure>
+                    </p>
+                    <img id="img8" class="img-responsive" src="{{ 'assets/img/img3.jpg' | relative_url }}"
+                        alt="image 8" />
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="{{ 'assets/js/wheelzoom.js' | relative_url }}?{{ site.time | to_integer }}"></script>
 <script>
-    var goFullScreen = function (wrapper, exitButton) {
-        return function () {
-            let img = wrapper;
-            if (img.requestFullscreen) {
-                img.requestFullscreen();
-            } else if (imgimg.msRequestFullscreen) {
-                img.msRequestFullscreen();
-            } else if (img.mozRequestFullScreen) {
-                img.mozRequestFullScreen();
-            } else if (img.webkitRequestFullscreen) {
-                img.webkitRequestFullscreen();
-            } else {
-                alert(
-                    "Sorry, your browser is too old and doesn't support fullscreen :-("
-                );
-                return;
-            }
-            exitButton.style.display = "block";
-        };
-    };
-
-    var exitFullscreen = function () {
-        this.style.display = "none";
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-        }
-    };
-
-    var img6fullscreen = document.getElementById("img6fullscreen");
-    var img6fullscreenExitButton = document.getElementById("img6Button");
-    img6fullscreenExitButton.style.display = "none";
-    img6fullscreen.onclick = goFullScreen(
-        document.getElementById("img6wrapper"),
-        img6fullscreenExitButton
-    );
-    img6fullscreenExitButton.onclick = exitFullscreen;
-
-    var img7fullscreen = document.getElementById("img7fullscreen");
-    var img7fullscreenExitButton = document.getElementById("img7Button");
-    img7fullscreenExitButton.style.display = "none";
-    img7fullscreen.onclick = goFullScreen(
-        document.getElementById("img7wrapper"),
-        img7fullscreenExitButton
-    );
-    img7fullscreenExitButton.onclick = exitFullscreen;
-
     window.onload = function () {
         var zoomIn = -100;
         var zoomOut = 100;
 
-        images = wheelzoom(document.querySelectorAll("img"), {
-            zoom: 0.1,
-            maxZoom: 10,
+        var images = [];
+        var bsImageModal;
+
+        document.querySelectorAll("img").forEach(function (image) {
+            // ignore bootstrap modal image
+            if (image.id !== 'img8') {
+                images.push(image);
+            }
+        })
+
+        wheelzoom(images);
+
+        $('#exampleModal').on('shown.bs.modal', function (e) {
+            bsImageModal = wheelzoom(document.getElementById('img8'));
         });
+
+        $('#exampleModal').on('hiden.bs.modal', function (e) {
+            bsImageModal.wz.destroy()
+        });
+
+        // $('#modalFullscreen').on('click', function () {
+        //     var modal = $('#exampleModal')[0];
+        //     if (modal.requestFullscreen) {
+        //         modal.requestFullscreen();
+        //     } else if (modal.mozRequestFullScreen) { /* Firefox */
+        //         this.mozRequestFullScreen();
+        //     } else if (modal.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        //         this.webkitRequestFullscreen();
+        //     } else if (modal.msRequestFullscreen) { /* IE/Edge */
+        //         modal.msRequestFullscreen();
+        //     }
+        // })
+
 
         images[0].addEventListener("wheelzoom.in", function (e) {
             document.getElementById("label1").innerHTML = '"wheelzoom.in"';
@@ -258,5 +239,57 @@ layout: default
         images[4].addEventListener("wheelzoom.dragend", function (e) {
             images[3].doDrag(e.detail.x, e.detail.y);
         });
+
+        var goFullScreen = function (wrapper, exitButton) {
+            return function () {
+                let img = wrapper;
+                if (img.requestFullscreen) {
+                    img.requestFullscreen();
+                } else if (imgimg.msRequestFullscreen) {
+                    img.msRequestFullscreen();
+                } else if (img.mozRequestFullScreen) {
+                    img.mozRequestFullScreen();
+                } else if (img.webkitRequestFullscreen) {
+                    img.webkitRequestFullscreen();
+                } else {
+                    alert(
+                        "Sorry, your browser is too old and doesn't support fullscreen :-("
+                    );
+                    return;
+                }
+                exitButton.style.display = "block";
+            };
+        };
+
+        var exitFullscreen = function () {
+            this.style.display = "none";
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        };
+
+        var img6fullscreen = document.getElementById("img6fullscreen");
+        var img6fullscreenExitButton = document.getElementById("img6Button");
+        img6fullscreenExitButton.style.display = "none";
+        img6fullscreen.onclick = goFullScreen(
+            document.getElementById("img6wrapper"),
+            img6fullscreenExitButton
+        );
+        img6fullscreenExitButton.onclick = exitFullscreen;
+
+        var img7fullscreen = document.getElementById("img7fullscreen");
+        var img7fullscreenExitButton = document.getElementById("img7Button");
+        img7fullscreenExitButton.style.display = "none";
+        img7fullscreen.onclick = goFullScreen(
+            document.getElementById("img7wrapper"),
+            img7fullscreenExitButton
+        );
+        img7fullscreenExitButton.onclick = exitFullscreen;
     };
 </script>
