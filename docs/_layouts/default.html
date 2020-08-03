@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+{%- include head.html -%}
+
+<body>
+  {%- include header.html -%}
+  <!-- MAIN CONTENT -->
+  <div id="main_content_wrap" class="outer">
+    <div class="wrapper">
+      <section id="main_content" class="inner">
+        {{ content }}
+      </section>
+    </div>
+  </div>
+  {%- include footer.html -%}
+  {%- include analytics.html -%}
+</body>
+
+</html>
