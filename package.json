@@ -1,46 +1,67 @@
 {
-    "name": "wheelzoom-revived",
-    "version": "1.2.4",
-    "description": "Zoom on images by scrolling",
-    "main": "./wheelzoom.js",
-    "homepage": "https://kwaadpepper.github.io/wheelzoom-revived",
-    "bugs": "https://github.com/kwaadpepper/wheelzoom-revived/issues",
-    "files": [
-        "wheelzoom.js"
-    ],
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "keywords": [
-        "zoom",
-        "image",
-        "viewer",
-        "scroll",
-        "wheel"
-    ],
-    "author": {
-        "name": "Kwaadpepper",
-        "url": "https://github.com/Kwaadpepper"
-    },
-    "contributors": [
-        {
-            "name": "Kwaadpepper",
-            "email": "github@jeremydev.ovh",
-            "url": "https://jeremydev.ovh"
-        }
-    ],
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Kwaadpepper/wheelzoom-revived.git"
-    },
-    "devDependencies": {
-        "eslint": "^7.5.0",
-        "eslint-config-standard": "^14.1.1",
-        "eslint-plugin-import": "^2.22.0",
-        "eslint-plugin-node": "^11.1.0",
-        "eslint-plugin-promise": "^4.2.1",
-        "eslint-plugin-standard": "^4.0.1"
-    },
-    "dependencies": {}
+  "name": "wheelzoom-revived",
+  "version": "1.3.0",
+  "description": "Zoom on images by scrolling",
+  "main": "./dist/wheelzoom.js",
+  "homepage": "https://kwaadpepper.github.io/wheelzoom-revived",
+  "bugs": "https://github.com/kwaadpepper/wheelzoom-revived/issues",
+  "files": [
+    "/dist/**/*",
+    "/src/**/*"
+  ],
+  "scripts": {
+    "clean": "gulp clean",
+    "build": "gulp build",
+    "dist": "gulp build",
+    "watch": "gulp watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "browserslist": "> 0.25%, not dead, ie 9",
+  "keywords": [
+    "zoom",
+    "image",
+    "viewer",
+    "scroll",
+    "wheel"
+  ],
+  "author": {
+    "name": "Kwaadpepper",
+    "url": "https://github.com/Kwaadpepper"
+  },
+  "contributors": [
+    {
+      "name": "Kwaadpepper",
+      "email": "github@jeremydev.ovh",
+      "url": "https://jeremydev.ovh"
+    }
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kwaadpepper/wheelzoom-revived.git"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.0",
+    "@babel/plugin-transform-classes": "^7.10.4",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^7.5.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean": "^0.4.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-coffee": "^3.0.3",
+    "gulp-coffee-includer": "^1.1.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-load-plugins": "^2.0.3",
+    "gulp-minify": "^3.1.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^4.1.0",
+    "gulp-sourcemaps": "^2.6.5"
+  },
+  "dependencies": {}
 }
