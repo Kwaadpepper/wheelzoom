@@ -7,7 +7,8 @@
   "bugs": "https://github.com/kwaadpepper/wheelzoom-revived/issues",
   "files": [
     "/dist/**/*",
-    "/src/**/*"
+    "/src/**/*",
+    "gulpfile.js"
   ],
   "scripts": {
     "clean": "gulp clean",
