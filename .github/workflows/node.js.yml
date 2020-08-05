@@ -35,4 +35,4 @@ jobs:
         run: gulp style
   
       - name: Run Test
-        run: gulp style
+        run: npm run test
