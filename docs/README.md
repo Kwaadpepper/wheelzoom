@@ -2,6 +2,8 @@
 layout: default
 ---
 
+![Gulp CI](https://github.com/Kwaadpepper/wheelzoom-revived/workflows/Gulp%20CI/badge.svg?branch=master)
+
 # Wheelzoom Usage
 
 ### [Usage](https://kwaadpepper.github.io/wheelzoom-revived/) [Demo](https://kwaadpepper.github.io/wheelzoom-revived/demo.html)
