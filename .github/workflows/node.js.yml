@@ -4,15 +4,14 @@ name: Gulp CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
     name: CI TEST
     runs-on: ubuntu-latest
-
 
     strategy:
       matrix:
@@ -24,7 +23,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-          
+
       - name: Clean Install
         run: npm ci
 
@@ -33,6 +32,6 @@ jobs:
 
       - name: Build CSS
         run: gulp style
-  
-#      - name: Run Test
-#        run: npm run test
+
+      - name: Run Test
+        run: npm run test
