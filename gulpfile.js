@@ -1,8 +1,8 @@
 var gulp = require('gulp')
 var plugins = require('gulp-load-plugins')()
 
-var source = './src'
-var dest = './dist'
+var source = 'src'
+var dest = 'dist'
 
 var targets = {
   ie: '9',

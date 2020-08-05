@@ -1,4 +1,4 @@
-__whmodules.add =>
+__whmodules.add ->
 
   @defaults = {
     zoom: 0.10,

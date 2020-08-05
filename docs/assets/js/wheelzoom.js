@@ -1,7 +1,5 @@
 "use strict";
 
-var _this = undefined;
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -57,12 +55,12 @@ __whmodules.add(function () {
 
 __whmodules.add(function () {
   var staticMethods;
-  _this.defaults = {
+  this.defaults = {
     zoom: 0.10,
     pinchSensibility: 0.3,
     maxZoom: -1
   };
-  _this.isPinched = false;
+  this.isPinched = false;
   staticMethods = ['images', 'resetAll', 'destroyAll'];
   return window.wheelzoom = function (elements, options) {
     var i, len, staticMethod, whz;
@@ -103,10 +101,10 @@ __whmodules.addClass('Events', Events = /*#__PURE__*/function () {
   _createClass(Events, [{
     key: "initEvents",
     value: function initEvents() {
-      var _this2 = this;
+      var _this = this;
 
       this._events['wheelzoom.reset'] = function () {
-        return _this2.whzImage.reset();
+        return _this.whzImage.reset();
       }.bind(this);
 
       this._events['wheelzoom.destroy'] = this.destroy.bind(this);
@@ -118,7 +116,7 @@ __whmodules.addClass('Events', Events = /*#__PURE__*/function () {
       this._events['mousemove'] = this.drag.bind(this);
       this._events['mouseup'] = this.removeDrag.bind(this);
       return ['wheelzoom.reset', 'wheelzoom.destroy', 'wheel', 'mousedown', 'touchstart'].forEach(function (evt) {
-        return _this2.on(_this2.domImage, evt);
+        return _this.on(_this.domImage, evt);
       }.bind(this));
     }
   }, {
@@ -134,7 +132,7 @@ __whmodules.addClass('Events', Events = /*#__PURE__*/function () {
   }, {
     key: "trigger",
     value: function trigger(eventName, options) {
-      var _this3 = this;
+      var _this2 = this;
 
       var zoomTimer;
       zoomTimer = null;
@@ -159,7 +157,7 @@ __whmodules.addClass('Events', Events = /*#__PURE__*/function () {
           // setTimeout to handle lot of events fired
           clearTimeout(zoomTimer);
           zoomTimer = setTimeout(function (eventName, options) {
-            return window.triggerEvent(_this3.domImage, eventName, options);
+            return window.triggerEvent(_this2.domImage, eventName, options);
           }.bind(this, eventName, options), 10);
           break;
       }

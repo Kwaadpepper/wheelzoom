@@ -15,8 +15,7 @@
     "build": "gulp build",
     "dist": "gulp build",
     "watch": "gulp watch",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prettier": "prettier"
+    "test": "gulp test"
   },
   "browserslist": "> 0.25%, not dead, ie 9",
   "keywords": [
@@ -46,6 +45,7 @@
     "@babel/core": "^7.11.1",
     "@babel/plugin-transform-classes": "^7.10.4",
     "@fellow/eslint-plugin-coffee": "^0.4.13",
+    "babel-eslint": "^10.1.0",
     "babel-preset-env": "^1.7.0",
     "eslint": "^7.6.0",
     "eslint-config-standard": "^14.1.1",
@@ -64,7 +64,6 @@
     "gulp-minify": "^3.1.0",
     "gulp-rename": "^2.0.0",
     "gulp-sass": "^4.1.0",
-    "gulp-sass-lint": "^1.4.0",
     "gulp-sourcemaps": "^2.6.5"
   },
   "dependencies": {}
