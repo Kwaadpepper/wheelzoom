@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for pinch to zoom touch event
 - Gulp build system
 - Bootstrap modal demo
+- github CI
+- eslint check
 
 ### Changed
 
