@@ -1,4 +1,4 @@
-__whmodules.add ->
+__whmodules.add =>
 
   @defaults = {
     zoom: 0.10,
@@ -16,4 +16,3 @@ __whmodules.add ->
     for staticMethod in staticMethods
       window.wheelzoom[staticMethod] = Wheelzoom[staticMethod]
     return whz
-    

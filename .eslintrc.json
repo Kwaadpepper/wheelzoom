@@ -1,0 +1,24 @@
+{
+  "env": {
+    "browser": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 5,
+    "sourceType": "script"
+  },
+  "rules": {},
+  "plugins": ["@fellow/coffee"],
+  "overrides": [
+    {
+      "files": "*.js",
+      "extends": ["standard"]
+    },
+    {
+      "files": "*.coffee",
+      "extends": ["plugin:@fellow/coffee/recommended"],
+      "rules": {
+        "@fellow/coffee/indentation": ["error", { "value": 2 }]
+      }
+    }
+  ]
+}

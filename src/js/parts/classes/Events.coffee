@@ -13,9 +13,9 @@ __whmodules.addClass 'Events',
 
       # Init
       @initEvents()
-    
-    initEvents: ->
-      @_events['wheelzoom.reset'] = (-> @whzImage.reset()).bind @
+
+    initEvents: =>
+      @_events['wheelzoom.reset'] = (=> @whzImage.reset()).bind @
       @_events['wheelzoom.destroy'] = @destroy.bind @
       @_events['wheel'] = @onwheel.bind @
       @_events['mousedown'] = @draggable.bind @
@@ -30,11 +30,11 @@ __whmodules.addClass 'Events',
         'wheel',
         'mousedown',
         'touchstart'
-      ].forEach  ((evt) -> @on @domImage, evt).bind @
-    
-    on: (element, evt) -> element.addEventListener evt, @_events[evt]
-    off: (element, evt) -> element.removeEventListener evt, @_events[evt]
-    trigger: (eventName, options) ->
+      ].forEach  ((evt) => @on @domImage, evt).bind @
+
+    on: (element, evt) => element.addEventListener evt, @_events[evt]
+    off: (element, evt) => element.removeEventListener evt, @_events[evt]
+    trigger: (eventName, options) =>
       zoomTimer = null
       options = options or {}
       switch eventName
@@ -50,12 +50,12 @@ __whmodules.addClass 'Events',
         when 'wheelzoom.out', 'wheelzoom.in'
           # setTimeout to handle lot of events fired
           clearTimeout zoomTimer
-          zoomTimer = setTimeout ((eventName, options) ->
+          zoomTimer = setTimeout ((eventName, options) =>
             window.triggerEvent @domImage, eventName, options
           ).bind(@, eventName, options), 10
           break
 
-    onwheel: (e) ->
+    onwheel: (e) =>
       e.preventDefault()
 
       deltaY = 0
@@ -66,7 +66,7 @@ __whmodules.addClass 'Events',
 
       @whzImage.zoom deltaY, true
 
-    drag: (e) ->
+    drag: (e) =>
       e.preventDefault()
 
       switch e.type
@@ -118,7 +118,7 @@ __whmodules.addClass 'Events',
       @previousEvent = e
       @whzImage.updateBgStyle()
 
-    draggable: (e) ->
+    draggable: (e) =>
       e.preventDefault()
       @trigger 'wheelzoom.dragend'
       @previousEvent = e
@@ -129,15 +129,15 @@ __whmodules.addClass 'Events',
         @on document, 'mousemove'
         @on document, 'mouseup'
 
-    removeDrag: (e) ->
+    removeDrag: (e) =>
       e.preventDefault()
       @trigger 'wheelzoom.dragend'
       @off document, 'touchmove'
       @off document, 'touchend'
       @off document, 'mousemove'
       @off document, 'mouseup'
-      
-    destroy: (e) ->
+
+    destroy: (e) =>
       @whzImage.destroy()
       @off @domImage, 'wheelzoom.reset'
       @off @domImage, 'wheelzoom.destroy'
@@ -148,7 +148,7 @@ __whmodules.addClass 'Events',
       @off @domImage, 'touchstart'
       @off @domImage, 'touchleave'
       @off @domImage, 'touchmove'
-      
+
       delete @previousEvent
       delete @whzImage
       delete @domImage

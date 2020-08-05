@@ -79,7 +79,16 @@ __whmodules.addClass('Events', Events = /*#__PURE__*/function () {
   function Events(_whzImage) {
     _classCallCheck(this, Events);
 
-    // Instance variables
+    this.initEvents = this.initEvents.bind(this);
+    this.on = this.on.bind(this);
+    this.off = this.off.bind(this);
+    this.trigger = this.trigger.bind(this);
+    this.onwheel = this.onwheel.bind(this);
+    this.drag = this.drag.bind(this);
+    this.draggable = this.draggable.bind(this);
+    this.removeDrag = this.removeDrag.bind(this);
+    this.destroy = this.destroy.bind(this); // Instance variables
+
     this.previousEvent = null;
     this.whzImage = _whzImage;
     this.domImage = _whzImage.domImage;
@@ -92,8 +101,10 @@ __whmodules.addClass('Events', Events = /*#__PURE__*/function () {
   _createClass(Events, [{
     key: "initEvents",
     value: function initEvents() {
+      var _this = this;
+
       this._events['wheelzoom.reset'] = function () {
-        return this.whzImage.reset();
+        return _this.whzImage.reset();
       }.bind(this);
 
       this._events['wheelzoom.destroy'] = this.destroy.bind(this);
@@ -105,7 +116,7 @@ __whmodules.addClass('Events', Events = /*#__PURE__*/function () {
       this._events['mousemove'] = this.drag.bind(this);
       this._events['mouseup'] = this.removeDrag.bind(this);
       return ['wheelzoom.reset', 'wheelzoom.destroy', 'wheel', 'mousedown', 'touchstart'].forEach(function (evt) {
-        return this.on(this.domImage, evt);
+        return _this.on(_this.domImage, evt);
       }.bind(this));
     }
   }, {
@@ -121,6 +132,8 @@ __whmodules.addClass('Events', Events = /*#__PURE__*/function () {
   }, {
     key: "trigger",
     value: function trigger(eventName, options) {
+      var _this2 = this;
+
       var zoomTimer;
       zoomTimer = null;
       options = options || {};
@@ -144,7 +157,7 @@ __whmodules.addClass('Events', Events = /*#__PURE__*/function () {
           // setTimeout to handle lot of events fired
           clearTimeout(zoomTimer);
           zoomTimer = setTimeout(function (eventName, options) {
-            return window.triggerEvent(this.domImage, eventName, options);
+            return window.triggerEvent(_this2.domImage, eventName, options);
           }.bind(this, eventName, options), 10);
           break;
       }

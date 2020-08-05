@@ -50,6 +50,12 @@ var minifyCoffee = function () {
     .pipe(gulp.dest(dest))
 }
 
+gulp.task('lint', function () {
+  return gulp.src(coffeeSource)
+    .pipe(plugins.eslint())
+    .pipe(plugins.eslint.failOnError())
+})
+
 var css = function () {
   return gulp.src(source + '/sass/*.scss')
     .pipe(plugins.sourcemaps.init())
@@ -81,3 +87,4 @@ gulp.task('watch', gulp.series('clean', function multipleWatch () {
   gulp.watch('src/sass/**/*', { ignoreInitial: false }, gulp.series('style'))
   gulp.watch('src/js/**/*', { ignoreInitial: false }, gulp.series('script'))
 }))
+gulp.task('test', gulp.series('lint'))

@@ -17,12 +17,12 @@ __whmodules.addClass 'Wheelzoom',
       # Do nothing in IE8
       if typeof window.getComputedStyle != 'function' then return elements
       if elements and elements.length then addImage(element, options) for element in elements
-      else if (elements && elements.nodeName) then addImage(elements, options)
+      else if (elements and elements.nodeName) then addImage(elements, options)
       return elements
 
     # private methods
     addImage = (img, options) ->
-      if !img or !img.nodeName or img.nodeName != 'IMG' then return
+      if not img or not img.nodeName or img.nodeName != 'IMG' then return
 
       wzImg = new Image img, parseOptions(options)
       wzImgs.push wzImg

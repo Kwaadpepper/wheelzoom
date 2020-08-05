@@ -2,7 +2,7 @@ __whmodules.addClass 'Image',
 
   class Image
 
-    constructor: (_domImage, _options) ->
+    constructor: (_domImage, _options) =>
 
       # Instance variables
       @domImage = _domImage
@@ -16,11 +16,11 @@ __whmodules.addClass 'Image',
         if img.complete
           load()
           clearInterval(t)
-      ).bind(null, @domImage, load.bind(@)), 100
+      ).bind(null, @domImage, @load.bind(@)), 100
 
-    isEqualTo: (img) -> img == @domImage
+    isEqualTo: (img) => img == @domImage
 
-    load = ->
+    load: =>
       if @domImage.src == @imgInfo.cachedDataUrl then return
 
       computedStyle = window.getComputedStyle(@domImage, null)
@@ -45,7 +45,7 @@ __whmodules.addClass 'Image',
       @domImage.style.backgroundSize = @imgInfo.width + 'px ' + @imgInfo.height + 'px'
       @domImage.style.backgroundPosition = @imgInfo.bgPosX + 'px ' + @imgInfo.bgPosY + 'px'
 
-    updateBgStyle: ->
+    updateBgStyle: =>
       windowBox = {
         left: 0,
         right: @domImage.width,
@@ -98,14 +98,14 @@ __whmodules.addClass 'Image',
       @domImage.style.backgroundSize = "#{@imgInfo.bgWidth}px #{@imgInfo.bgHeight}px"
       @domImage.style.backgroundPosition = "#{@imgInfo.bgPosX}px #{@imgInfo.bgPosY}px"
 
-    reset: ->
+    reset: =>
       @imgInfo.bgWidth = @imgInfo.width
       @imgInfo.bgHeight = @imgInfo.height
       @imgInfo.bgPosX = @domImage.width / 2 - @imgInfo.width / 2
       @imgInfo.bgPosY = @domImage.height / 2 - @imgInfo.height / 2
       @updateBgStyle()
 
-    setSrcToBackground: ->
+    setSrcToBackground: =>
       @domImage.style.backgroundImage = "url('#{@domImage.src}')"
       @domImage.style.backgroundRepeat = 'no-repeat'
       @canvas.width = @domImage.naturalWidth
@@ -113,7 +113,7 @@ __whmodules.addClass 'Image',
       @imgInfo.cachedDataUrl = @canvas.toDataURL()
       @domImage.src = @imgInfo.cachedDataUrl
 
-    zoom: (deltaY, propagate = false) ->
+    zoom: (deltaY, propagate = false) =>
       zoomSensibility = if __whmodules.globals['isPinched']
       then @options.zoom * @options.pinchSensibility
       else @options.zoom
@@ -163,12 +163,12 @@ __whmodules.addClass 'Image',
         @wzEvents.trigger 'wheelzoom.reset'
       else @updateBgStyle()
 
-    drag: (x, y) ->
+    drag: (x, y) =>
       @imgInfo.bgPosX = x
       @imgInfo.bgPosY = y
       @updateBgStyle()
 
-    destroy: ->
+    destroy: =>
       @domImage.style = @domImage.getAttribute('style')
       @domImage.src = @domImage.getAttribute('src')
       @wzImageApi.destroy()
