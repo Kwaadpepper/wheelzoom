@@ -34,5 +34,5 @@ jobs:
       - name: Build CSS
         run: gulp style
   
-      - name: Run Test
-        run: npm run test
+#      - name: Run Test
+#        run: npm run test
