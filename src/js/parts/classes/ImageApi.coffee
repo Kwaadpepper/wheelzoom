@@ -2,7 +2,7 @@ __whmodules.addClass 'ImageApi',
 
   class ImageApi
 
-    constructor: (_whzImage) =>
+    constructor: (_whzImage) ->
       @whzImage = _whzImage
       @domImage = _whzImage.domImage
       @registerApiMethods()

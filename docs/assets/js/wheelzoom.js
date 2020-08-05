@@ -1,5 +1,7 @@
 "use strict";
 
+var _this = undefined;
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -55,12 +57,12 @@ __whmodules.add(function () {
 
 __whmodules.add(function () {
   var staticMethods;
-  this.defaults = {
+  _this.defaults = {
     zoom: 0.10,
     pinchSensibility: 0.3,
     maxZoom: -1
   };
-  this.isPinched = false;
+  _this.isPinched = false;
   staticMethods = ['images', 'resetAll', 'destroyAll'];
   return window.wheelzoom = function (elements, options) {
     var i, len, staticMethod, whz;
@@ -101,10 +103,10 @@ __whmodules.addClass('Events', Events = /*#__PURE__*/function () {
   _createClass(Events, [{
     key: "initEvents",
     value: function initEvents() {
-      var _this = this;
+      var _this2 = this;
 
       this._events['wheelzoom.reset'] = function () {
-        return _this.whzImage.reset();
+        return _this2.whzImage.reset();
       }.bind(this);
 
       this._events['wheelzoom.destroy'] = this.destroy.bind(this);
@@ -116,7 +118,7 @@ __whmodules.addClass('Events', Events = /*#__PURE__*/function () {
       this._events['mousemove'] = this.drag.bind(this);
       this._events['mouseup'] = this.removeDrag.bind(this);
       return ['wheelzoom.reset', 'wheelzoom.destroy', 'wheel', 'mousedown', 'touchstart'].forEach(function (evt) {
-        return _this.on(_this.domImage, evt);
+        return _this2.on(_this2.domImage, evt);
       }.bind(this));
     }
   }, {
@@ -132,7 +134,7 @@ __whmodules.addClass('Events', Events = /*#__PURE__*/function () {
   }, {
     key: "trigger",
     value: function trigger(eventName, options) {
-      var _this2 = this;
+      var _this3 = this;
 
       var zoomTimer;
       zoomTimer = null;
@@ -157,7 +159,7 @@ __whmodules.addClass('Events', Events = /*#__PURE__*/function () {
           // setTimeout to handle lot of events fired
           clearTimeout(zoomTimer);
           zoomTimer = setTimeout(function (eventName, options) {
-            return window.triggerEvent(_this2.domImage, eventName, options);
+            return window.triggerEvent(_this3.domImage, eventName, options);
           }.bind(this, eventName, options), 10);
           break;
       }
@@ -278,224 +280,230 @@ __whmodules.addClass('Events', Events = /*#__PURE__*/function () {
   return Events;
 }());
 
-__whmodules.addClass('Image', Image = function () {
-  var load;
+__whmodules.addClass('Image', Image = /*#__PURE__*/function () {
+  function Image(_domImage, _options) {
+    _classCallCheck(this, Image);
 
-  var Image = /*#__PURE__*/function () {
-    function Image(_domImage, _options) {
-      _classCallCheck(this, Image);
+    var t;
+    this.isEqualTo = this.isEqualTo.bind(this);
+    this.load = this.load.bind(this);
+    this.updateBgStyle = this.updateBgStyle.bind(this);
+    this.reset = this.reset.bind(this);
+    this.setSrcToBackground = this.setSrcToBackground.bind(this);
+    this.zoom = this.zoom.bind(this);
+    this.drag = this.drag.bind(this);
+    this.destroy = this.destroy.bind(this); // Instance variables
 
-      var t; // Instance variables
+    this.domImage = _domImage;
+    this.canvas = document.createElement('canvas');
+    this.options = _options || {};
+    this.imgInfo = {};
+    this.wzEvents = new Events(this);
+    this.wzImageApi = new ImageApi(this);
+    t = setInterval(function (img, load) {
+      if (img.complete) {
+        load();
+        return clearInterval(t);
+      }
+    }.bind(null, this.domImage, this.load.bind(this)), 100);
+  }
 
-      this.domImage = _domImage;
-      this.canvas = document.createElement('canvas');
-      this.options = _options || {};
-      this.imgInfo = {};
-      this.wzEvents = new Events(this);
-      this.wzImageApi = new ImageApi(this);
-      t = setInterval(function (img, load) {
-        if (img.complete) {
-          load();
-          return clearInterval(t);
-        }
-      }.bind(null, this.domImage, load.bind(this)), 100);
+  _createClass(Image, [{
+    key: "isEqualTo",
+    value: function isEqualTo(img) {
+      return img === this.domImage;
     }
+  }, {
+    key: "load",
+    value: function load() {
+      var bgPosX, bgPosY, computedStyle, height, width;
 
-    _createClass(Image, [{
-      key: "isEqualTo",
-      value: function isEqualTo(img) {
-        return img === this.domImage;
+      if (this.domImage.src === this.imgInfo.cachedDataUrl) {
+        return;
       }
-    }, {
-      key: "updateBgStyle",
-      value: function updateBgStyle() {
-        var imageBox, windowBox;
-        windowBox = {
-          left: 0,
-          right: this.domImage.width,
-          top: 0,
-          down: this.domImage.height,
-          width: this.domImage.width,
-          height: this.domImage.height
-        };
-        imageBox = {
-          left: this.imgInfo.bgPosX,
-          right: this.imgInfo.bgPosX + this.imgInfo.bgWidth,
-          top: this.imgInfo.bgPosY,
-          down: this.imgInfo.bgPosY + this.imgInfo.bgHeight,
-          width: this.imgInfo.bgWidth,
-          height: this.imgInfo.bgHeight
-        }; // If image width is smaller than canvas width
 
-        if (imageBox.width < windowBox.width) {
-          if (imageBox.left < windowBox.left) {
-            // do not overflow left
-            this.imgInfo.bgPosX = windowBox.left;
-          } else if (imageBox.right > windowBox.right) {
-            // do not overflow right
-            this.imgInfo.bgPosX = windowBox.right - this.imgInfo.bgWidth; // if image width is bigger than canvas width
-          }
+      computedStyle = window.getComputedStyle(this.domImage, null);
+      width = parseInt(computedStyle.width, 10);
+      height = parseInt(computedStyle.height, 10);
+      bgPosX = (this.domImage.width - width) / 2;
+      bgPosY = (this.domImage.height - height) / 2;
+      this.imgInfo.width = width;
+      this.imgInfo.height = height;
+      this.imgInfo.bgWidth = width;
+      this.imgInfo.bgHeight = height;
+      this.imgInfo.initBgPosX = bgPosX;
+      this.imgInfo.initBgPosY = bgPosY;
+      this.imgInfo.bgPosX = bgPosX;
+      this.imgInfo.bgPosY = bgPosY;
+      this.setSrcToBackground(this.domImage);
+      this.domImage.style.backgroundSize = this.imgInfo.width + 'px ' + this.imgInfo.height + 'px';
+      return this.domImage.style.backgroundPosition = this.imgInfo.bgPosX + 'px ' + this.imgInfo.bgPosY + 'px';
+    }
+  }, {
+    key: "updateBgStyle",
+    value: function updateBgStyle() {
+      var imageBox, windowBox;
+      windowBox = {
+        left: 0,
+        right: this.domImage.width,
+        top: 0,
+        down: this.domImage.height,
+        width: this.domImage.width,
+        height: this.domImage.height
+      };
+      imageBox = {
+        left: this.imgInfo.bgPosX,
+        right: this.imgInfo.bgPosX + this.imgInfo.bgWidth,
+        top: this.imgInfo.bgPosY,
+        down: this.imgInfo.bgPosY + this.imgInfo.bgHeight,
+        width: this.imgInfo.bgWidth,
+        height: this.imgInfo.bgHeight
+      }; // If image width is smaller than canvas width
+
+      if (imageBox.width < windowBox.width) {
+        if (imageBox.left < windowBox.left) {
+          // do not overflow left
+          this.imgInfo.bgPosX = windowBox.left;
+        } else if (imageBox.right > windowBox.right) {
+          // do not overflow right
+          this.imgInfo.bgPosX = windowBox.right - this.imgInfo.bgWidth; // if image width is bigger than canvas width
+        }
+      } else {
+        // force overflow left
+        if (imageBox.left > windowBox.left) {
+          this.imgInfo.bgPosX = windowBox.left;
+        } else if (imageBox.right < windowBox.right) {
+          // force overflow right
+          this.imgInfo.bgPosX = windowBox.right - this.imgInfo.bgWidth;
+        }
+      } // If image height is smaller than canvas height
+
+
+      if (imageBox.height < windowBox.height) {
+        if (imageBox.top < windowBox.top) {
+          // do not overflow top
+          this.imgInfo.bgPosY = windowBox.top;
         } else {
-          // force overflow left
-          if (imageBox.left > windowBox.left) {
-            this.imgInfo.bgPosX = windowBox.left;
-          } else if (imageBox.right < windowBox.right) {
-            // force overflow right
-            this.imgInfo.bgPosX = windowBox.right - this.imgInfo.bgWidth;
-          }
-        } // If image height is smaller than canvas height
-
-
-        if (imageBox.height < windowBox.height) {
-          if (imageBox.top < windowBox.top) {
-            // do not overflow top
-            this.imgInfo.bgPosY = windowBox.top;
-          } else {
-            if (imageBox.down > windowBox.down) {
-              //endregion do not overflow down
-              this.imgInfo.bgPosY = windowBox.down - this.imgInfo.bgHeight; // if image height is bigger than canvas height
-            }
-          }
-        } else {
-          if (imageBox.top > windowBox.top) {
-            // force overflow top
-            this.imgInfo.bgPosY = windowBox.top;
-          } else if (imageBox.down < windowBox.down) {
-            // force overflow down
-            this.imgInfo.bgPosY = windowBox.down - this.imgInfo.bgHeight;
+          if (imageBox.down > windowBox.down) {
+            //endregion do not overflow down
+            this.imgInfo.bgPosY = windowBox.down - this.imgInfo.bgHeight; // if image height is bigger than canvas height
           }
         }
-
-        this.domImage.style.backgroundSize = this.imgInfo.bgWidth + "px " + this.imgInfo.bgHeight + "px";
-        return this.domImage.style.backgroundPosition = this.imgInfo.bgPosX + "px " + this.imgInfo.bgPosY + "px";
+      } else {
+        if (imageBox.top > windowBox.top) {
+          // force overflow top
+          this.imgInfo.bgPosY = windowBox.top;
+        } else if (imageBox.down < windowBox.down) {
+          // force overflow down
+          this.imgInfo.bgPosY = windowBox.down - this.imgInfo.bgHeight;
+        }
       }
-    }, {
-      key: "reset",
-      value: function reset() {
-        this.imgInfo.bgWidth = this.imgInfo.width;
-        this.imgInfo.bgHeight = this.imgInfo.height;
-        this.imgInfo.bgPosX = this.domImage.width / 2 - this.imgInfo.width / 2;
-        this.imgInfo.bgPosY = this.domImage.height / 2 - this.imgInfo.height / 2;
-        return this.updateBgStyle();
-      }
-    }, {
-      key: "setSrcToBackground",
-      value: function setSrcToBackground() {
-        this.domImage.style.backgroundImage = "url('" + this.domImage.src + "')";
-        this.domImage.style.backgroundRepeat = 'no-repeat';
-        this.canvas.width = this.domImage.naturalWidth;
-        this.canvas.height = this.domImage.naturalHeight;
-        this.imgInfo.cachedDataUrl = this.canvas.toDataURL();
-        return this.domImage.src = this.imgInfo.cachedDataUrl;
-      }
-    }, {
-      key: "zoom",
-      value: function zoom(deltaY) {
-        var propagate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-        var bgCenterX, bgCenterY, bgRatioX, bgRatioY, offsetX, offsetY, zoomSensibility;
-        zoomSensibility = __whmodules.globals['isPinched'] ? this.options.zoom * this.options.pinchSensibility : this.options.zoom; // zoom always at the center of the image
 
-        offsetX = this.domImage.width / 2;
-        offsetY = this.domImage.height / 2; // Record the offset between the bg edge and the center of the image:
+      this.domImage.style.backgroundSize = this.imgInfo.bgWidth + "px " + this.imgInfo.bgHeight + "px";
+      return this.domImage.style.backgroundPosition = this.imgInfo.bgPosX + "px " + this.imgInfo.bgPosY + "px";
+    }
+  }, {
+    key: "reset",
+    value: function reset() {
+      this.imgInfo.bgWidth = this.imgInfo.width;
+      this.imgInfo.bgHeight = this.imgInfo.height;
+      this.imgInfo.bgPosX = this.domImage.width / 2 - this.imgInfo.width / 2;
+      this.imgInfo.bgPosY = this.domImage.height / 2 - this.imgInfo.height / 2;
+      return this.updateBgStyle();
+    }
+  }, {
+    key: "setSrcToBackground",
+    value: function setSrcToBackground() {
+      this.domImage.style.backgroundImage = "url('" + this.domImage.src + "')";
+      this.domImage.style.backgroundRepeat = 'no-repeat';
+      this.canvas.width = this.domImage.naturalWidth;
+      this.canvas.height = this.domImage.naturalHeight;
+      this.imgInfo.cachedDataUrl = this.canvas.toDataURL();
+      return this.domImage.src = this.imgInfo.cachedDataUrl;
+    }
+  }, {
+    key: "zoom",
+    value: function zoom(deltaY) {
+      var propagate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var bgCenterX, bgCenterY, bgRatioX, bgRatioY, offsetX, offsetY, zoomSensibility;
+      zoomSensibility = __whmodules.globals['isPinched'] ? this.options.zoom * this.options.pinchSensibility : this.options.zoom; // zoom always at the center of the image
 
-        bgCenterX = offsetX - this.imgInfo.bgPosX;
-        bgCenterY = offsetY - this.imgInfo.bgPosY; // Use the previous offset to get the percent offset between the bg edge
-        // and the center of the image:
+      offsetX = this.domImage.width / 2;
+      offsetY = this.domImage.height / 2; // Record the offset between the bg edge and the center of the image:
 
-        bgRatioX = bgCenterX / this.imgInfo.bgWidth;
-        bgRatioY = bgCenterY / this.imgInfo.bgHeight; // Update the bg size:
+      bgCenterX = offsetX - this.imgInfo.bgPosX;
+      bgCenterY = offsetY - this.imgInfo.bgPosY; // Use the previous offset to get the percent offset between the bg edge
+      // and the center of the image:
 
+      bgRatioX = bgCenterX / this.imgInfo.bgWidth;
+      bgRatioY = bgCenterY / this.imgInfo.bgHeight; // Update the bg size:
+
+      if (deltaY < 0) {
+        if (this.options.maxZoom === -1 || (this.imgInfo.bgWidth + this.imgInfo.bgWidth * zoomSensibility) / this.imgInfo.width <= this.options.maxZoom) {
+          this.imgInfo.bgWidth += this.imgInfo.bgWidth * zoomSensibility;
+          this.imgInfo.bgHeight += this.imgInfo.bgHeight * zoomSensibility;
+        }
+      } else {
+        this.imgInfo.bgWidth -= this.imgInfo.bgWidth * zoomSensibility;
+        this.imgInfo.bgHeight -= this.imgInfo.bgHeight * zoomSensibility;
+      } // Take the percent offset and apply it to the new size:
+
+
+      this.imgInfo.bgPosX = offsetX - this.imgInfo.bgWidth * bgRatioX;
+      this.imgInfo.bgPosY = offsetY - this.imgInfo.bgHeight * bgRatioY;
+
+      if (propagate) {
         if (deltaY < 0) {
-          if (this.options.maxZoom === -1 || (this.imgInfo.bgWidth + this.imgInfo.bgWidth * zoomSensibility) / this.imgInfo.width <= this.options.maxZoom) {
-            this.imgInfo.bgWidth += this.imgInfo.bgWidth * zoomSensibility;
-            this.imgInfo.bgHeight += this.imgInfo.bgHeight * zoomSensibility;
-          }
+          this.wzEvents.trigger('wheelzoom.in', {
+            zoom: this.imgInfo.bgWidth / this.imgInfo.width,
+            bgPosX: this.imgInfo.bgPosX,
+            bgPosY: this.imgInfo.bgPosY
+          });
         } else {
-          this.imgInfo.bgWidth -= this.imgInfo.bgWidth * zoomSensibility;
-          this.imgInfo.bgHeight -= this.imgInfo.bgHeight * zoomSensibility;
-        } // Take the percent offset and apply it to the new size:
-
-
-        this.imgInfo.bgPosX = offsetX - this.imgInfo.bgWidth * bgRatioX;
-        this.imgInfo.bgPosY = offsetY - this.imgInfo.bgHeight * bgRatioY;
-
-        if (propagate) {
-          if (deltaY < 0) {
-            this.wzEvents.trigger('wheelzoom.in', {
-              zoom: this.imgInfo.bgWidth / this.imgInfo.width,
-              bgPosX: this.imgInfo.bgPosX,
-              bgPosY: this.imgInfo.bgPosY
-            });
-          } else {
-            this.wzEvents.trigger('wheelzoom.out', {
-              zoom: this.imgInfo.bgWidth / this.imgInfo.width,
-              bgPosX: this.imgInfo.bgPosX,
-              bgPosY: this.imgInfo.bgPosY
-            });
-          }
-        } // Prevent zooming out beyond the starting size
-
-
-        if (this.imgInfo.bgWidth <= this.imgInfo.width || this.imgInfo.bgHeight <= this.imgInfo.height) {
-          return this.wzEvents.trigger('wheelzoom.reset');
-        } else {
-          return this.updateBgStyle();
+          this.wzEvents.trigger('wheelzoom.out', {
+            zoom: this.imgInfo.bgWidth / this.imgInfo.width,
+            bgPosX: this.imgInfo.bgPosX,
+            bgPosY: this.imgInfo.bgPosY
+          });
         }
-      }
-    }, {
-      key: "drag",
-      value: function drag(x, y) {
-        this.imgInfo.bgPosX = x;
-        this.imgInfo.bgPosY = y;
+      } // Prevent zooming out beyond the starting size
+
+
+      if (this.imgInfo.bgWidth <= this.imgInfo.width || this.imgInfo.bgHeight <= this.imgInfo.height) {
+        return this.wzEvents.trigger('wheelzoom.reset');
+      } else {
         return this.updateBgStyle();
       }
-    }, {
-      key: "destroy",
-      value: function destroy() {
-        this.domImage.style = this.domImage.getAttribute('style');
-        this.domImage.src = this.domImage.getAttribute('src');
-        this.wzImageApi.destroy();
-        return delete this.wzImageApi;
-      }
-    }]);
-
-    return Image;
-  }();
-
-  ;
-
-  load = function load() {
-    var bgPosX, bgPosY, computedStyle, height, width;
-
-    if (this.domImage.src === this.imgInfo.cachedDataUrl) {
-      return;
     }
-
-    computedStyle = window.getComputedStyle(this.domImage, null);
-    width = parseInt(computedStyle.width, 10);
-    height = parseInt(computedStyle.height, 10);
-    bgPosX = (this.domImage.width - width) / 2;
-    bgPosY = (this.domImage.height - height) / 2;
-    this.imgInfo.width = width;
-    this.imgInfo.height = height;
-    this.imgInfo.bgWidth = width;
-    this.imgInfo.bgHeight = height;
-    this.imgInfo.initBgPosX = bgPosX;
-    this.imgInfo.initBgPosY = bgPosY;
-    this.imgInfo.bgPosX = bgPosX;
-    this.imgInfo.bgPosY = bgPosY;
-    this.setSrcToBackground(this.domImage);
-    this.domImage.style.backgroundSize = this.imgInfo.width + 'px ' + this.imgInfo.height + 'px';
-    return this.domImage.style.backgroundPosition = this.imgInfo.bgPosX + 'px ' + this.imgInfo.bgPosY + 'px';
-  };
+  }, {
+    key: "drag",
+    value: function drag(x, y) {
+      this.imgInfo.bgPosX = x;
+      this.imgInfo.bgPosY = y;
+      return this.updateBgStyle();
+    }
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      this.domImage.style = this.domImage.getAttribute('style');
+      this.domImage.src = this.domImage.getAttribute('src');
+      this.wzImageApi.destroy();
+      return delete this.wzImageApi;
+    }
+  }]);
 
   return Image;
-}.call(undefined));
+}());
 
 __whmodules.addClass('ImageApi', ImageApi = /*#__PURE__*/function () {
   function ImageApi(_whzImage) {
     _classCallCheck(this, ImageApi);
 
+    this.registerApiMethods = this.registerApiMethods.bind(this);
+    this.destroy = this.destroy.bind(this);
+    this.doZoomIn = this.doZoomIn.bind(this);
+    this.doZoomOut = this.doZoomOut.bind(this);
+    this.doDrag = this.doDrag.bind(this);
     this.whzImage = _whzImage;
     this.domImage = _whzImage.domImage;
     this.registerApiMethods();

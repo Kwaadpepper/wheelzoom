@@ -2,7 +2,7 @@ __whmodules.addClass 'Image',
 
   class Image
 
-    constructor: (_domImage, _options) =>
+    constructor: (_domImage, _options) ->
 
       # Instance variables
       @domImage = _domImage
