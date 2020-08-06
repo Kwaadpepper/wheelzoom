@@ -53,6 +53,7 @@ var minifyCoffee = function () {
 gulp.task('lint', function () {
   return gulp.src(coffeeSource)
     .pipe(plugins.eslint())
+    .pipe(plugins.eslint.format('stylish', process.stdout))
     .pipe(plugins.eslint.failOnError())
 })
 
