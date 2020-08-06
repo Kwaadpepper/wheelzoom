@@ -340,7 +340,9 @@ __whmodules.addClass('Image', Image = /*#__PURE__*/function () {
   }, {
     key: "updateBgStyle",
     value: function updateBgStyle() {
-      var imageBox, windowBox;
+      var _this3 = this;
+
+      var cycl, imageBox, windowBox;
       windowBox = {
         left: 0,
         right: this.domImage.width,
@@ -356,47 +358,35 @@ __whmodules.addClass('Image', Image = /*#__PURE__*/function () {
         down: this.imgInfo.bgPosY + this.imgInfo.bgHeight,
         width: this.imgInfo.bgWidth,
         height: this.imgInfo.bgHeight
-      }; // If image width is smaller than canvas width
+      };
 
-      if (imageBox.width < windowBox.width) {
-        if (imageBox.left < windowBox.left) {
-          // do not overflow left
-          this.imgInfo.bgPosX = windowBox.left;
-        } else if (imageBox.right > windowBox.right) {
-          // do not overflow right
-          this.imgInfo.bgPosX = windowBox.right - this.imgInfo.bgWidth; // if image width is bigger than canvas width
-        }
-      } else {
-        // force overflow left
-        if (imageBox.left > windowBox.left) {
-          this.imgInfo.bgPosX = windowBox.left;
-        } else if (imageBox.right < windowBox.right) {
-          // force overflow right
-          this.imgInfo.bgPosX = windowBox.right - this.imgInfo.bgWidth;
-        }
-      } // If image height is smaller than canvas height
+      cycl = function cycl(size, aSide, bSide, bgPos, bgSize) {
+        // If image size is smaller than canvas size
+        if (imageBox[size] < windowBox[size]) {
+          if (imageBox[aSide] < windowBox[aSide]) {
+            // do not overflow left
+            _this3.imgInfo[bgPos] = windowBox[aSide];
+          }
 
-
-      if (imageBox.height < windowBox.height) {
-        if (imageBox.top < windowBox.top) {
-          // do not overflow top
-          this.imgInfo.bgPosY = windowBox.top;
+          if (imageBox[bSide] > windowBox[bSide]) {
+            // do not overflow right
+            return _this3.imgInfo[bgPos] = windowBox[bSide] - _this3.imgInfo[bgSize];
+          }
         } else {
-          if (imageBox.down > windowBox.down) {
-            //endregion do not overflow down
-            this.imgInfo.bgPosY = windowBox.down - this.imgInfo.bgHeight; // if image height is bigger than canvas height
+          // force overflow aSide
+          if (imageBox[aSide] > windowBox[aSide]) {
+            _this3.imgInfo[bgPos] = windowBox[aSide];
+          }
+
+          if (imageBox[bSide] < windowBox[bSide]) {
+            // force overflow bSide
+            return _this3.imgInfo[bgPos] = windowBox[bSide] - _this3.imgInfo[bgSize];
           }
         }
-      } else {
-        if (imageBox.top > windowBox.top) {
-          // force overflow top
-          this.imgInfo.bgPosY = windowBox.top;
-        } else if (imageBox.down < windowBox.down) {
-          // force overflow down
-          this.imgInfo.bgPosY = windowBox.down - this.imgInfo.bgHeight;
-        }
-      }
+      };
 
+      cycl('width', 'left', 'right', 'bgPosX', 'bgWidth');
+      cycl('height', 'top', 'down', 'bgPosY', 'bgHeight');
       this.domImage.style.backgroundSize = this.imgInfo.bgWidth + "px " + this.imgInfo.bgHeight + "px";
       return this.domImage.style.backgroundPosition = this.imgInfo.bgPosX + "px " + this.imgInfo.bgPosY + "px";
     }

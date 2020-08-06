@@ -64,36 +64,25 @@ __whmodules.addClass 'Image',
         height: @imgInfo.bgHeight
       }
 
-      # If image width is smaller than canvas width
-      if imageBox.width < windowBox.width
-        if imageBox.left < windowBox.left
-          # do not overflow left
-          @imgInfo.bgPosX = windowBox.left
-        else if imageBox.right > windowBox.right
-          # do not overflow right
-          @imgInfo.bgPosX = windowBox.right - @imgInfo.bgWidth
-      else # if image width is bigger than canvas width
-        # force overflow left
-        if imageBox.left > windowBox.left
-          @imgInfo.bgPosX = windowBox.left
-        else if imageBox.right < windowBox.right
-          # force overflow right
-          @imgInfo.bgPosX = windowBox.right - @imgInfo.bgWidth
+      cycl = (size, aSide, bSide, bgPos, bgSize) =>
+        # If image size is smaller than canvas size
+        if imageBox[size] < windowBox[size]
+          if imageBox[aSide] < windowBox[aSide]
+            # do not overflow left
+            @imgInfo[bgPos] = windowBox[aSide]
+          if imageBox[bSide] > windowBox[bSide]
+            # do not overflow right
+            @imgInfo[bgPos] = windowBox[bSide] - @imgInfo[bgSize]
+        else # if image size is bigger than canvas size
+          # force overflow aSide
+          if imageBox[aSide] > windowBox[aSide]
+            @imgInfo[bgPos] = windowBox[aSide]
+          if imageBox[bSide] < windowBox[bSide]
+            # force overflow bSide
+            @imgInfo[bgPos] = windowBox[bSide] - @imgInfo[bgSize]
 
-      # If image height is smaller than canvas height
-      if imageBox.height < windowBox.height
-        if imageBox.top < windowBox.top
-          # do not overflow top
-          @imgInfo.bgPosY = windowBox.top
-        else
-          if imageBox.down > windowBox.down #endregion do not overflow down
-            @imgInfo.bgPosY = windowBox.down - @imgInfo.bgHeight
-      else # if image height is bigger than canvas height
-        if imageBox.top > windowBox.top # force overflow top
-          @imgInfo.bgPosY = windowBox.top
-        else if imageBox.down < windowBox.down
-          # force overflow down
-          @imgInfo.bgPosY = windowBox.down - @imgInfo.bgHeight
+      cycl('width', 'left', 'right', 'bgPosX', 'bgWidth')
+      cycl('height', 'top', 'down', 'bgPosY', 'bgHeight')
 
       @domImage.style.backgroundSize = "#{@imgInfo.bgWidth}px #{@imgInfo.bgHeight}px"
       @domImage.style.backgroundPosition = "#{@imgInfo.bgPosX}px #{@imgInfo.bgPosY}px"
