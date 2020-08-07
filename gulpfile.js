@@ -11,7 +11,7 @@ var targets = {
 
 var coffeeOptions = {
   require: true,
-  bare: true,
+  bare: false,
   sourcemaps: true,
   inlineMap: false
 }
