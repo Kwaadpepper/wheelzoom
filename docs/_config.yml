@@ -1,7 +1,7 @@
 theme: jekyll-theme-slate
 show_downloads: true
 defaults:
-    - scope:
-          path: "README.md"
-      values:
-          permalink: "index.html"
+  - scope:
+      path: "README.md"
+    values:
+      permalink: "index.html"
